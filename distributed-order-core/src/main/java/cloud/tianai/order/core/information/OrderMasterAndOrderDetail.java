@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.Collection;
 
 /**
- * @Auther: 天爱有情
+ * @Author: 天爱有情
  * @Date: 2019/10/24 19:10
  * @Description: 订单主信息和订单详情
  */

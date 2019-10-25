@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 /**
- * @Auther: 天爱有情
+ * @Author: 天爱有情
  * @Date: 2019/8/20 16:05
  * @Description: mybatisplus配置
  */
@@ -30,7 +30,7 @@ public class MybatisPlusConfiguration {
      *
      * @return PerformanceInterceptor
      */
-    @Bean
+//    @Bean
     @Profile({"test", "dev"})
     public PerformanceInterceptor performanceInterceptor() {
         PerformanceInterceptor performanceInterceptor = new PerformanceInterceptor();

@@ -38,12 +38,12 @@ public class DataSourceDbAndTableHolder {
 
     public static String getDbForHash(String name) {
         lockDB();
-        return GetConsistentHashForDB.CONSISTENT_HASH.getServer(name);
+        return GetConsistentHashForDB.CONSISTENT_HASH.getServerForConsistentHash(name);
     }
 
     public static String getTableForHash(String name) {
         lockTable();
-        return GetConsistentHashForTable.CONSISTENT_HASH.getServer(name);
+        return GetConsistentHashForTable.CONSISTENT_HASH.getServerForConsistentHash(name);
     }
 
     private static void lockDB() {

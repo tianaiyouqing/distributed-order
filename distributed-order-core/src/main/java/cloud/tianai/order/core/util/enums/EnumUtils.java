@@ -1,7 +1,7 @@
 package cloud.tianai.order.core.util.enums;
 
 /**
- * @Auther: 天爱有情
+ * @Author: 天爱有情
  * @Date: 2019/9/3 12:24
  * @Description: 枚举工具包
  */

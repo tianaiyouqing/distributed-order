@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 /**
- * @Auther: 天爱有情
+ * @Author: 天爱有情
  * @Date: 2019/9/3 12:22
  * @Description: 用于快速校验该图片是什么类型的 以及该图片的宽高
  */

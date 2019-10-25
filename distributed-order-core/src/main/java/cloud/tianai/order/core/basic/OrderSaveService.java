@@ -6,7 +6,7 @@ import cloud.tianai.order.core.information.OrderMasterAndOrderDetail;
 import cloud.tianai.order.core.warpper.OrderWrapper;
 
 /**
- * @Auther: 天爱有情
+ * @Author: 天爱有情
  * @Date: 2019/10/24 18:55
  * @Description: 订单存储
  */

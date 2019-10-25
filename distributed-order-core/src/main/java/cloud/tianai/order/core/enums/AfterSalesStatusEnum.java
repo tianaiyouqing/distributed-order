@@ -3,7 +3,7 @@ package cloud.tianai.order.core.enums;
 import lombok.Getter;
 
 /**
- * @Auther: 天爱有情
+ * @Author: 天爱有情
  * @Date: 2019/10/24 19:47
  * @Description: 售后状态
  */

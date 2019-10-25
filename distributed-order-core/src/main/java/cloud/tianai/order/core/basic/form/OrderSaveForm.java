@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.Collection;
 
 /**
- * @Auther: 天爱有情
+ * @Author: 天爱有情
  * @Date: 2019/10/24 18:56
  * @Description: 订单存储需要的数据
  */

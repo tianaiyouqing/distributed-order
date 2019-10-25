@@ -16,7 +16,6 @@ public class OrderInsertListener implements ApplicationListener<OrderInsertEvent
             System.out.println("插入订单前 id=" + event.getSource().getOrderMaster().getOid());
         }else if(event instanceof PostOrderInsertEvent) {
             System.out.println("插入订单后 id=" + event.getSource().getOrderMaster().getOid());
-
         }
     }
 }

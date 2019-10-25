@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 
 /**
- * @Auther: 天爱有情
+ * @Author: 天爱有情
  * @Date: 2019/10/24 16:52
  * @Description: 订单ID生成器
  */

@@ -1,7 +1,7 @@
 package cloud.tianai.order.core.exception;
 
 /**
- * @Auther: 天爱有情
+ * @Author: 天爱有情
  * @Date: 2019/10/24 19:12
  * @Description: 订单报错异常
  */

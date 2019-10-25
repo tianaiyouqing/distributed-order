@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="cloud.tianai.order.core.mapper.OrderMasterMapper">
+
+
+    <update id="updateOrderStatus">
+        update order_master
+        set order_status = #{update.updateOrderStatus}
+        where
+            oid = #{update.oid}
+        <if test="update.uid != null and update.uid != ''">
+            and uid = #{update.uid}
+        </if>
+        <if test="update.bid != null and update.bid != ''">
+            and bid = #{update.bid}
+        </if>
+        <if test="update.oldOrderStatus != null">
+            and order_status = #{update.oldOrderStatus}
+        </if>
+    </update>
+</mapper>

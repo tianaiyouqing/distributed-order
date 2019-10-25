@@ -1,7 +1,7 @@
 package cloud.tianai.order.core.id;
 
 /**
- * @Auther: 天爱有情
+ * @Author: 天爱有情
  * @Date: 2019/10/24 16:49
  * @Description: 分片ID持有者
  */

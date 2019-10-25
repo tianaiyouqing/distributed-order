@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.util.*;
 
 /**
- * @Auther: 天爱有情
+ * @Author: 天爱有情
  * @Date: 2019/10/24 15:24
  * @Description: 一致hash
  */
@@ -17,7 +17,13 @@ public class ConsistentHash {
      */
     private SortedMap<Integer, String> sortedMap = new TreeMap<Integer, String>();
     @Getter
-    private Collection<String> servers = new ArrayList<>(8);
+    private ArrayList<String> servers = new ArrayList<>(8);
+
+    /** 默认的虚拟节点为10. */
+    private Integer virtualNodeNum = 10;
+    /** 虚拟节点标识. */
+    private String virtualNodeAfterIdent = "[VIP][%s]";
+
     public ConsistentHash(Collection<String> servers) {
         this.servers.addAll(servers);
         for (String server : servers) {
@@ -26,7 +32,20 @@ public class ConsistentHash {
         }
     }
 
+    public ConsistentHash(Collection<String> servers, Integer virtualNodeNum) {
+        this.servers.addAll(servers);
+        for (String server : servers) {
+            String sub = server.substring(server.lastIndexOf("_"));
+            for (Integer i = 0; i < virtualNodeNum; i++) {
+                String str = sub + String.format(virtualNodeAfterIdent, i);
+                int hash = getHash(str);
+                sortedMap.put(hash, server);
+            }
+        }
+    }
+
     public ConsistentHash() {
+
     }
 
     public void setServers(Collection<String> servers) {
@@ -60,9 +79,11 @@ public class ConsistentHash {
     }
 
     /**
-     * 得到应当路由到的结点
+     * 一致hash算法得到对应的node
+     * @param node
+     * @return
      */
-    public String getServer(String node) {
+    public String getServerForConsistentHash(String node) {
         // 得到带路由的结点的Hash值
         int hash = getHash(node);
         // 得到大于该Hash值的所有Map
@@ -78,5 +99,16 @@ public class ConsistentHash {
             //返回对应的服务器
             return subMap.get(i);
         }
+    }
+
+    /**
+     * 普通的模运算得到对应的node
+     * @param node node
+     * @return
+     */
+    public String getServerForMod(String node) {
+        int hash = getHash(node);
+        Integer index = hash % servers.size();
+        return servers.get(index);
     }
 }

@@ -4,7 +4,7 @@ import cloud.tianai.order.core.warpper.OrderWrapper;
 import org.springframework.context.ApplicationEvent;
 
 /**
- * @Auther: 天爱有情
+ * @Author: 天爱有情
  * @Date: 2019/10/24 22:56
  * @Description: 添加订单事件
  */

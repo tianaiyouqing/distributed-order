@@ -1,6 +1,7 @@
 package cloud.tianai.order.core.util.id;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Title: IdUtils
@@ -33,4 +34,15 @@ public class IdUtils {
         return UUID.randomUUID().toString().replace("-", "");
     }
 
+
+    public static void main(String[] args) throws InterruptedException {
+        for (int i = 50; i > 0; i--) {
+            long nextId = worker.nextId();
+
+            System.out.println(nextId);
+
+            TimeUnit.MILLISECONDS.sleep(1);
+        }
+
+    }
 }

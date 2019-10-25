@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 /**
- * @Auther: 天爱有情
+ * @Author: 天爱有情
  * @Date: 2019/10/24 22:43
  * @Description: 基本包装器
  */

@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * @Auther: 天爱有情
+ * @Author: 天爱有情
  * @Date: 2019/10/24 14:36
  * @Description: 配置分库分表策略
  */
@@ -29,7 +29,10 @@ import java.util.Properties;
 @Configuration
 @ConfigurationProperties(prefix = "spring.datasource")
 public class ShardingJdbcConfiguration {
+    /** db属性配置. */
     private Map<String, DataSourceProperties> db;
+    /** shardingJdbc属性配置. */
+    private Properties prop;
 
     @Bean
     public DataSource getShardingDataSource() {
@@ -100,9 +103,7 @@ public class ShardingJdbcConfiguration {
      * @return
      */
     private Properties getShardingConfig() {
-        Properties props = new Properties();
-        props.put("sql.show", "true");
-        return props;
+        return prop;
     }
 
     /**

@@ -8,9 +8,14 @@ import cloud.tianai.order.core.util.id.IdUtils;
 import cloud.tianai.order.core.warpper.OrderWrapper;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.util.StopWatch;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
@@ -22,76 +27,97 @@ public class OrderSaveServiceTest extends ApplicationTests {
     @Test
     public void insertOrder() {
 
-        String uid = "156489132156";
-        String bid = "156789151277";
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        MultiValueMap<Integer, OrderSaveForm> maps = new LinkedMultiValueMap();
+        for (int i = 1; i < 1000000; i++) {
+            String uid = IdUtils.getNoRepetitionIdStr();
+            String bid = IdUtils.getNoRepetitionIdStr();
 
-        OrderSaveForm orderSaveForm= new OrderSaveForm();
-        orderSaveForm.setPayRemark("买家留言了");
-        orderSaveForm.setCouponPrice(500L);
-        orderSaveForm.setChannelId("android_001");
+            OrderSaveForm orderSaveForm= new OrderSaveForm();
+            orderSaveForm.setPayRemark("买家留言了");
+            orderSaveForm.setCouponPrice(500L);
+            orderSaveForm.setChannelId("android_001");
 
-        BasicUserInfo basicUserInfo = new BasicUserInfo().setUid(uid);
+            BasicUserInfo basicUserInfo = new BasicUserInfo().setUid(uid);
 
-        orderSaveForm.setUserInfo(basicUserInfo);
-        AddressInfo addressInfo= new AddressInfo()
-                .setAddressDesc("东六排六号")
-                .setStreet("东关街")
-                .setArea("和顺县")
-                .setCity("晋中市")
-                .setProvince("山西省")
-                .setBuyerName("张三")
-                .setBuyerPhone("13333333333")
-                ;
-        Collection<ProductInfo> productInfos = new ArrayList<>(2);
-        ProductInfo p1 = new ProductInfo();
-        p1.setPid("1111111")
-                .setBid(bid)
-                .setProductName("衣服")
-                .setProductPrice(5000L)
-                .setProductQuantity(2)
-                .setProductIcon("http://www.baidu.com")
-                .setProductSku("12312312313")
-                .setProductSkuDesc("[[aa:bb},{cc:dd}]")
-                .setProductBarcode("0001");
+            orderSaveForm.setUserInfo(basicUserInfo);
+            AddressInfo addressInfo= new AddressInfo()
+                    .setAddressDesc("东六排六号" + i)
+                    .setStreet("东关街" + i)
+                    .setArea("和顺县" + i)
+                    .setCity("晋中市" + i)
+                    .setProvince("山西省" + i)
+                    .setBuyerName("张三" + i)
+                    .setBuyerPhone("13333333333")
+                    ;
+            Collection<ProductInfo> productInfos = new ArrayList<>(2);
+            ProductInfo p1 = new ProductInfo();
+            p1.setPid(IdUtils.getNoRepetitionIdStr())
+                    .setBid(bid)
+                    .setProductName("衣服")
+                    .setProductPrice(5000L + i + 100)
+                    .setProductQuantity(i % 100 + 1)
+                    .setProductIcon("http://www.baidu.com")
+                    .setProductSku(IdUtils.getNoRepetitionIdStr())
+                    .setProductSkuDesc("[[aa:bb},{cc:dd}]")
+                    .setProductBarcode("0001");
 
-        ProductInfo p2 = new ProductInfo();
-        p2.setPid("2222222")
-                .setBid(bid)
-                .setProductName("裤子")
-                .setProductPrice(3000L)
-                .setProductQuantity(1)
-                .setProductIcon("http://www.baidu.com")
-                .setProductSku("12312312313")
-                .setProductSkuDesc("[[aa:bb},{cc:dd}]")
-                .setProductBarcode("0002");
+            ProductInfo p2 = new ProductInfo();
+            p2.setPid(IdUtils.getNoRepetitionIdStr())
+                    .setBid(bid)
+                    .setProductName("裤子")
+                    .setProductPrice(3000L + i + 100)
+                    .setProductQuantity(i % 100 + 1)
+                    .setProductIcon("http://www.baidu.com")
+                    .setProductSku("12312312313")
+                    .setProductSkuDesc("[[aa:bb},{cc:dd}]")
+                    .setProductBarcode("0002");
 
-        ProductInfo p3 = new ProductInfo();
-        p3.setPid("2222222")
-                .setBid(bid)
-                .setProductName("鞋子")
-                .setProductPrice(6000L)
-                .setProductQuantity(3)
-                .setProductIcon("http://www.baidu.com")
-                .setProductSku("12312312313")
-                .setProductSkuDesc("[[aa:bb},{cc:dd}]")
-                .setProductBarcode("0003");
-        productInfos.add(p1);
-        productInfos.add(p2);
-        productInfos.add(p3);
+            ProductInfo p3 = new ProductInfo();
+            p3.setPid(IdUtils.getNoRepetitionIdStr())
+                    .setBid(bid)
+                    .setProductName("鞋子")
+                    .setProductPrice(6000L)
+                    .setProductQuantity(i % 100 + 1)
+                    .setProductIcon("http://www.baidu.com")
+                    .setProductSku(IdUtils.getNoRepetitionIdStr())
+                    .setProductSkuDesc("[[aa:bb},{cc:dd}]")
+                    .setProductBarcode("0003");
+            productInfos.add(p1);
+            productInfos.add(p2);
+            productInfos.add(p3);
 
-        orderSaveForm.setAddressInfo(addressInfo);
+            orderSaveForm.setAddressInfo(addressInfo);
 
-        BasicBusinessInfo businessInfo= new BasicBusinessInfo().setBid(bid);
-        orderSaveForm.setBusinessInfo(businessInfo);
-        orderSaveForm.setProductInfos(productInfos);
+            BasicBusinessInfo businessInfo= new BasicBusinessInfo().setBid(bid);
+            orderSaveForm.setBusinessInfo(businessInfo);
+            orderSaveForm.setProductInfos(productInfos);
 
+            int i1 = i % 100;
+            List<OrderSaveForm> res = maps.get(i1);
+            if(res == null) {
+                res = new ArrayList<>(255);
+                maps.put(i1, res);
+            }
+            res.add(orderSaveForm);
+            //orderSaveService.insertOrder(orderSaveForm);
+        }
 
-        OrderWrapper res = orderSaveService.insertOrder(orderSaveForm);
+        maps.forEach((k, v) -> {
+            new Thread(() -> {
+                v.forEach(v2 -> {
+                    orderSaveService.insertOrder(v2);
+                });
+            }).start();
+        });
 
-        System.out.println(GsonUtils.gsonString(res));
-
-        System.out.println("=======");
-
-
+        stopWatch.stop();
+        try {
+            TimeUnit.DAYS.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("耗时:" + stopWatch.getTotalTimeMillis());
     }
 }

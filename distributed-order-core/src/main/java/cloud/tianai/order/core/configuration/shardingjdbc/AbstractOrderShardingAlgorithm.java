@@ -12,7 +12,14 @@ import io.shardingsphere.api.algorithm.sharding.standard.RangeShardingAlgorithm;
 
 import java.util.*;
 
+/**
+ * @Author: 天爱有情
+ * @Date: 2019/10/25 9:03
+ * @Description: 抽象的订单分库分表策略
+ */
 public abstract class AbstractOrderShardingAlgorithm implements ComplexKeysShardingAlgorithm, RangeShardingAlgorithm {
+
+    /** 存储hash算法器的容器. */
     private Map<String, ConsistentHash> consistentHashMap = new HashMap<>(2);
 
     @Override
@@ -23,7 +30,7 @@ public abstract class AbstractOrderShardingAlgorithm implements ComplexKeysShard
         if(Objects.isNull(shardingIdHolder)) {
             throw new IllegalArgumentException("分库分表策略出错， 未找到 ShardingIdHolder");
         }
-        Collection<String> result = internalDoSharding(consistentHash, shardingValues, shardingIdHolder);
+        Collection<String> result = internalSharding(consistentHash, shardingValues, shardingIdHolder);
         return result;
     }
 
@@ -52,13 +59,19 @@ public abstract class AbstractOrderShardingAlgorithm implements ComplexKeysShard
     protected ConsistentHash getConsistentHash(String logicTableName, Collection<String> availableTargetNames) {
         ConsistentHash consistentHash = consistentHashMap.get(logicTableName);
         if (Objects.isNull(consistentHash)) {
-            consistentHash = new ConsistentHash(availableTargetNames);
+            consistentHash = new ConsistentHash(availableTargetNames, 30);
             consistentHashMap.put(logicTableName, consistentHash);
         }
         return consistentHash;
     }
 
-
-    protected abstract Collection<String> internalDoSharding(ConsistentHash consistentHash, Collection<ShardingValue> shardingValues, ShardingIdHolder shardingIdHolder);
+    /**
+     * 内部执行逻辑_(:з」∠)_方法
+     * @param consistentHash hash
+     * @param shardingValues 传来的只
+     * @param shardingIdHolder 分库分表需要的算法器
+     * @return Collection<String>
+     */
+    protected abstract Collection<String> internalSharding(ConsistentHash consistentHash, Collection<ShardingValue> shardingValues, ShardingIdHolder shardingIdHolder);
 
 }

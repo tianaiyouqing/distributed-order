@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * @Auther: 天爱有情
+ * @Author: 天爱有情
  * @Date: 2019/10/24 15:00
  * @Description: 订单详情信息
  */
