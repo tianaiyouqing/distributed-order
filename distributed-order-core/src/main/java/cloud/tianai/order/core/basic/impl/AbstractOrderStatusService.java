@@ -9,6 +9,7 @@ import cloud.tianai.order.core.util.gson.GsonUtils;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 /**
@@ -20,6 +21,7 @@ import org.springframework.util.Assert;
 public abstract class AbstractOrderStatusService extends AbstractOrderSaveService implements OrderStatusService {
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateOrderStatusForOid(String oid, OrderStatusEnum updateOrderStatus) throws OrderStatusUpdateException {
         Assert.hasText(oid, "订单ID不能为空");
         Assert.notNull(updateOrderStatus, "订单状态不能为空");
@@ -29,6 +31,7 @@ public abstract class AbstractOrderStatusService extends AbstractOrderSaveServic
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateOrderStatusForOid(String oid, OrderStatusEnum oldOrderStatus, OrderStatusEnum updateOrderStatus) throws OrderStatusUpdateException {
         Assert.hasText(oid, "订单ID不能为空");
         Assert.notNull(oldOrderStatus, "原始订单状态不能为空");
@@ -42,6 +45,7 @@ public abstract class AbstractOrderStatusService extends AbstractOrderSaveServic
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateOrderStatusForOidAndUid(String oid, String uid, OrderStatusEnum updateOrderStatus) throws OrderStatusUpdateException {
         Assert.hasText(oid, "订单ID不能为空");
         Assert.hasText(uid, "用户ID不能为空");
@@ -55,6 +59,7 @@ public abstract class AbstractOrderStatusService extends AbstractOrderSaveServic
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateOrderStatusForOidAndUid(String oid, String uid, OrderStatusEnum oldOrderStatus, OrderStatusEnum updateOrderStatus) throws OrderStatusUpdateException {
         Assert.hasText(oid, "订单ID不能为空");
         Assert.hasText(uid, "用户ID不能为空");
@@ -70,6 +75,7 @@ public abstract class AbstractOrderStatusService extends AbstractOrderSaveServic
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateOrderStatusForOidAndBid(String oid, String bid, OrderStatusEnum orderStatus) throws OrderStatusUpdateException {
         Assert.hasText(oid, "订单ID不能为空");
         Assert.hasText(bid, "商户ID不能为空");
@@ -83,11 +89,13 @@ public abstract class AbstractOrderStatusService extends AbstractOrderSaveServic
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateOrderStatusForOidAndBid(String oid, String bid, OrderStatusEnum oldOrderStatus, OrderStatusEnum updateOrderStatus) throws OrderStatusUpdateException {
         Assert.hasText(oid, "订单ID不能为空");
         Assert.hasText(bid, "商户ID不能为空");
         Assert.notNull(oldOrderStatus, "原始订单状态不能为空");
-        Assert.notNull(updateOrderStatus, "订单状态不能为空");;
+        Assert.notNull(updateOrderStatus, "订单状态不能为空");
+
         OrderStatusUpdate orderStatusUpdate = new OrderStatusUpdate()
                 .setOid(oid)
                 .setBid(bid)
@@ -100,16 +108,18 @@ public abstract class AbstractOrderStatusService extends AbstractOrderSaveServic
 
     /**
      * 更新订单状态
+     *
      * @param update 参数
      * @throws OrderStatusUpdateException 更改失败抛出异常
      */
+    @Transactional(rollbackFor = Exception.class)
     protected void updateOrderStatus(OrderStatusUpdate update) throws OrderStatusUpdateException {
         update = postProcessBeforeUpdateOrderStatus(update);
 
         boolean updateStatus = doUpdateOrderStatus(update);
 
         postProcessAfterUpdateOrderStatus(update, updateStatus);
-        if(!updateStatus) {
+        if (!updateStatus) {
             log.error("修改订单失败， 搜索条件未扫描到对应的订单, update={}", GsonUtils.gsonString(update));
             throw new OrderStatusUpdateException("修改失败， 搜索条件不正确");
         }
@@ -118,7 +128,8 @@ public abstract class AbstractOrderStatusService extends AbstractOrderSaveServic
 
     /**
      * 在修改订单状态之后
-     * @param update 要修改的订单状态和查询参数
+     *
+     * @param update       要修改的订单状态和查询参数
      * @param updateStatus 是否修改成功
      */
     void postProcessAfterUpdateOrderStatus(OrderStatusUpdate update, boolean updateStatus) {
@@ -127,6 +138,7 @@ public abstract class AbstractOrderStatusService extends AbstractOrderSaveServic
 
     /**
      * 在修改订单状态之前
+     *
      * @param update 要修改的订单状态和查询参数
      * @return
      */
@@ -138,6 +150,7 @@ public abstract class AbstractOrderStatusService extends AbstractOrderSaveServic
 
     /**
      * 修改订单状态
+     *
      * @param update 要修改订单状态的相关参数
      * @return 修改成功返回true
      * @throws OrderStatusUpdateException
@@ -150,16 +163,26 @@ public abstract class AbstractOrderStatusService extends AbstractOrderSaveServic
     public static class OrderStatusUpdate {
 
         // 查询条件
-        /** 订单ID. */
+        /**
+         * 订单ID.
+         */
         private String oid;
-        /** 用户ID. */
+        /**
+         * 用户ID.
+         */
         private String uid;
-        /** 商户ID. */
+        /**
+         * 商户ID.
+         */
         private String bid;
-        /** 原始的订单状态. */
+        /**
+         * 原始的订单状态.
+         */
         private Integer oldOrderStatus;
 
-        /** 要修改的订单状态. */
+        /**
+         * 要修改的订单状态.
+         */
         private Integer updateOrderStatus;
     }
 }

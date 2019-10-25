@@ -6,7 +6,7 @@ import cloud.tianai.order.core.basic.event.PreOrderInsertEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class OrderInsertListener implements ApplicationListener<OrderInsertEvent> {
 
 

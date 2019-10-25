@@ -7,6 +7,7 @@ import cloud.tianai.order.core.util.gson.GsonUtils;
 import cloud.tianai.order.core.util.id.IdUtils;
 import cloud.tianai.order.core.warpper.OrderWrapper;
 import org.junit.Test;
+import org.junit.rules.Stopwatch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -95,22 +96,22 @@ public class OrderSaveServiceTest extends ApplicationTests {
             orderSaveForm.setProductInfos(productInfos);
 
             int i1 = i % 100;
-            List<OrderSaveForm> res = maps.get(i1);
-            if(res == null) {
-                res = new ArrayList<>(255);
-                maps.put(i1, res);
-            }
+            List<OrderSaveForm> res = maps.computeIfAbsent(i1, k -> new ArrayList<>(255));
             res.add(orderSaveForm);
-            //orderSaveService.insertOrder(orderSaveForm);
+            StopWatch sw = new StopWatch();
+            sw.start();
+            orderSaveService.insertOrder(orderSaveForm);
+            sw.stop();
+            System.out.println("耗时:" + sw.getTotalTimeMillis() +"ms");
         }
-
-        maps.forEach((k, v) -> {
-            new Thread(() -> {
-                v.forEach(v2 -> {
-                    orderSaveService.insertOrder(v2);
-                });
-            }).start();
-        });
+// 1118765657732311449882830
+//        maps.forEach((k, v) -> {
+//            new Thread(() -> {
+//                v.forEach(v2 -> {
+//                    orderSaveService.insertOrder(v2);
+//                });
+//            }).start();
+//        });
 
         stopWatch.stop();
         try {
