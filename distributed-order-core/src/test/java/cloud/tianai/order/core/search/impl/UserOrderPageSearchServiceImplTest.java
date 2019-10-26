@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 public class UserOrderPageSearchServiceImplTest extends ApplicationTests {
 
 
@@ -34,20 +32,22 @@ public class UserOrderPageSearchServiceImplTest extends ApplicationTests {
         Integer pageSize = 20;
         OrderSearchForm search = new OrderSearchForm();
         search.setUid("1187398437650337793");
-        String lastFlowNum = null;
-        List<String> lastFlowNums = userOrderPageSearchService.listFutureFlowPageNums(search, lastFlowNum, pageSize, 10);
+        String lastFlowNum = "1118739845138668339493940";
+        List<String> lastFlowNums = userOrderPageSearchService.listFutureScrollPageNums(search, lastFlowNum, pageSize, 10);
         System.out.println(GsonUtils.gsonString(lastFlowNums));
 
         List<OrderMasterDTO> resultData =  new ArrayList<>(255);
-        List<OrderMasterDTO> result = userOrderPageSearchService.flowSearch(search, lastFlowNum, pageSize);
+        List<OrderMasterDTO> result = userOrderPageSearchService.scrollSearch(search, lastFlowNum, pageSize);
         resultData.addAll(result);
         for (String flowNum : lastFlowNums) {
             lastFlowNum = flowNum;
-            result = userOrderPageSearchService.flowSearch(search, lastFlowNum, pageSize);
+            result = userOrderPageSearchService.scrollSearch(search, lastFlowNum, pageSize);
             resultData.addAll(result);
         }
 
-
+        for (int i = 0; i < resultData.size(); i++) {
+            System.out.println("index: " + (i+1) +", oid:" + resultData.get(i).getOid());
+        }
         System.out.println("==========================");
         System.out.println(GsonUtils.gsonString(resultData));
     }

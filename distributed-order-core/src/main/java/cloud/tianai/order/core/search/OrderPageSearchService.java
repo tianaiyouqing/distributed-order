@@ -1,17 +1,15 @@
 package cloud.tianai.order.core.search;
 
-import cloud.tianai.order.core.dataobject.OrderMasterDO;
 import cloud.tianai.order.core.dto.OrderMasterDTO;
 import cloud.tianai.order.core.search.form.OrderSearchForm;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 /**
  * @Author: 天爱有情
  * @Date: 2019/10/26 16:31
  * @Description: 订单分页搜索业务层接口
  */
-public interface OrderPageSearchService extends OrderFlowPageSearchService {
+public interface OrderPageSearchService extends OrderScrollPageSearchService {
 
     /**
      * 普通的分页查询

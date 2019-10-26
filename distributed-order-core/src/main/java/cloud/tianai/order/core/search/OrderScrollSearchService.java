@@ -10,7 +10,7 @@ import java.util.List;
  * @Date: 2019/10/26 15:41
  * @Description: 流式查询接口
  */
-public interface OrderFlowSearchService {
+public interface OrderScrollSearchService {
 
     /**
      * 跳板查询
@@ -20,5 +20,5 @@ public interface OrderFlowSearchService {
      * @param pageSize   分页数量
      * @return List<OrderMasterDO>
      */
-    List<OrderMasterDTO> flowSearch(OrderSearchForm searchParam, String lastFlowNum, Integer pageSize);
+    List<OrderMasterDTO> scrollSearch(OrderSearchForm searchParam, String lastFlowNum, Integer pageSize);
 }

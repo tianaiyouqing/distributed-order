@@ -11,7 +11,6 @@ import cloud.tianai.order.core.search.form.OrderSearchForm;
 import cloud.tianai.order.core.util.OrderMergeUtils;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -21,6 +20,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -129,13 +129,38 @@ public class UserOrderPageSearchServiceImpl extends AbstractOrderPageSearchServi
     }
 
     @Override
-    protected List<String> doListFutureFlowPageNums(OrderSearchForm search, String lastFlowNum, Integer pageSize, Integer readNum) {
-        return orderMasterMapper.findFutureFlowPageNums(search, lastFlowNum, pageSize, pageSize * readNum);
+    protected List<String> doListFutureScrollPageNums(OrderSearchForm search, String lastFlowNum, Integer pageSize, Integer readNum) {
+        // 这里简单说明一下， 原本可以通过sql语句取模运算然后查询的数据返回， 可是shardingjdbc不支持这种写法， 就很尴尬了
+        // 最终方案是查询所有ID 然后在内存中进行模运算处理, 使用limit限制数量， 每页20行，一共10页的话是取200个订单ID， 性能消耗还不算很大
+
+        // 原sql语句
+        /*
+        *   select
+                o.oid, o.i
+            from
+            (SELECT
+                (@i := @i + 1) i, om.oid
+            FROM
+                `order_master_3` om, (select @i := 0) t
+            ORDER BY om.oid DESC
+            limit 200
+            ) o
+            where MOD(o.i, 20) = 0
+        * */
+
+        List<String> oids = orderMasterMapper.findFutureScrollPageNums(search, lastFlowNum, pageSize * readNum);
+        List<String> result = new ArrayList<>(readNum);
+        for (int i = 0; i < oids.size(); i++) {
+            if((i + 1) % pageSize == 0) {
+                result.add(oids.get(i));
+            }
+        }
+        return result;
     }
 
     @Override
-    protected List<OrderMasterDTO> doFlowSearch(OrderSearchForm search, String lastFlowNum, Integer pageSize) {
-        List<OrderMasterDO> orderMasterDOList = orderMasterMapper.findForFlow(search, lastFlowNum, pageSize);
+    protected List<OrderMasterDTO> doScrollSearch(OrderSearchForm search, String lastFlowNum, Integer pageSize) {
+        List<OrderMasterDO> orderMasterDOList = orderMasterMapper.findForScroll(search, lastFlowNum, pageSize);
         return converter(orderMasterDOList);
     }
 }

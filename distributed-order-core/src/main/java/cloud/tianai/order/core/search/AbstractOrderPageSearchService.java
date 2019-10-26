@@ -4,7 +4,6 @@ import cloud.tianai.order.core.dto.OrderMasterDTO;
 import cloud.tianai.order.core.exception.OrderSearchException;
 import cloud.tianai.order.core.search.form.OrderSearchForm;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;
 
 import java.util.List;
@@ -46,18 +45,18 @@ public abstract class AbstractOrderPageSearchService implements OrderPageSearchS
 
 
     @Override
-    public List<String> listFutureFlowPageNums(OrderSearchForm search, String lastFlowNum, Integer pageSize, Integer readNum) {
+    public List<String> listFutureScrollPageNums(OrderSearchForm search, String lastFlowNum, Integer pageSize, Integer readNum) {
         checkParamOfThrow(search);
         pageSize = useDefaultPageSizeIfNecessary(pageSize);
         readNum = useDefaultFlowReadNumIfNecessary(readNum);
-        return doListFutureFlowPageNums(search, lastFlowNum, pageSize, readNum);
+        return doListFutureScrollPageNums(search, lastFlowNum, pageSize, readNum);
     }
 
     @Override
-    public List<OrderMasterDTO> flowSearch(OrderSearchForm search, String lastFlowNum, Integer pageSize) {
+    public List<OrderMasterDTO> scrollSearch(OrderSearchForm search, String lastFlowNum, Integer pageSize) {
         checkParamOfThrow(search);
         pageSize = useDefaultPageSizeIfNecessary(pageSize);
-        return doFlowSearch(search, lastFlowNum, pageSize);
+        return doScrollSearch(search, lastFlowNum, pageSize);
     }
 
     protected Integer useDefaultFlowReadNumIfNecessary(Integer readNum) {
@@ -111,7 +110,7 @@ public abstract class AbstractOrderPageSearchService implements OrderPageSearchS
      * @param readNum     读取的数量
      * @return List<String>
      */
-    protected abstract List<String> doListFutureFlowPageNums(OrderSearchForm search, String lastFlowNum, Integer pageSize, Integer readNum);
+    protected abstract List<String> doListFutureScrollPageNums(OrderSearchForm search, String lastFlowNum, Integer pageSize, Integer readNum);
 
     /**
      * 流式分页查询
@@ -121,5 +120,5 @@ public abstract class AbstractOrderPageSearchService implements OrderPageSearchS
      * @param pageSize    显示多少条
      * @return List<OrderMasterDTO>
      */
-    protected abstract List<OrderMasterDTO> doFlowSearch(OrderSearchForm search, String lastFlowNum, Integer pageSize);
+    protected abstract List<OrderMasterDTO> doScrollSearch(OrderSearchForm search, String lastFlowNum, Integer pageSize);
 }

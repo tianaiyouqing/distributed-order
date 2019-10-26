@@ -17,14 +17,11 @@ public interface OrderMasterMapper extends BaseMapper<OrderMasterDO> {
 
     int updateOrderStatus(@Param("update") AbstractOrderStatusService.OrderStatusUpdate update);
 
-    List<OrderMasterDO> findtestSearch();
+    List<String> findFutureScrollPageNums(@Param("search") OrderSearchForm search,
+                                          @Param("lastFlowNum") String lastFlowNum,
+                                          @Param("readNum") Integer readNum);
 
-    List<String> findFutureFlowPageNums(@Param("search") OrderSearchForm search,
-                                    @Param("lastFlowNum") String lastFlowNum,
-                                    @Param("pageSize") Integer pageSize,
-                                    @Param("readNum") Integer readNum);
-
-    List<OrderMasterDO> findForFlow(@Param("search") OrderSearchForm search,
-                                    @Param("lastFlowNum") String lastFlowNum,
-                                    @Param("pageSize") Integer pageSize);
+    List<OrderMasterDO> findForScroll(@Param("search") OrderSearchForm search,
+                                      @Param("lastFlowNum") String lastFlowNum,
+                                      @Param("pageSize") Integer pageSize);
 }
