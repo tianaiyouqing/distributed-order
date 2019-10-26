@@ -44,7 +44,7 @@ spring:
         username: root
         password: root
     prop:
-      sql.show: false
+      sql.show: true
 
 # mybatis config
 mybatis-plus:
