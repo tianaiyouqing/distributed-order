@@ -1,14 +1,14 @@
-package cloud.tianai.order.core.configuration.shardingjdbc;
+package cloud.tianai.order.core.configuration.shardingjdbc.user;
 
+import cloud.tianai.order.core.configuration.shardingjdbc.AbstractOrderShardingAlgorithm;
 import cloud.tianai.order.core.holder.DataSourceDbAndTableHolder;
 import cloud.tianai.order.core.id.ShardingIdHolder;
 import cloud.tianai.order.core.util.ConsistentHash;
-import cloud.tianai.order.core.util.gson.GsonUtils;
 import io.shardingsphere.api.algorithm.sharding.ShardingValue;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 
 /**
@@ -38,20 +38,17 @@ public class DBPreciseShardingAlgorithm extends AbstractOrderShardingAlgorithm {
             String columnName = shardingValue.getColumnName();
             if (Objects.equals("uid", columnName)) {
                 String uid = getSingletonValue(shardingValue).toString();
-                String dbName = consistentHash.getServerForMod(shardingIdHolder.getShardingIdForUserId(uid));
-                result.add(dbName);
+                String dbName = consistentHash.getDatabaseForMod(shardingIdHolder.getShardingIdForUserId(uid));
+                return Collections.singleton(dbName);
             }else if(Objects.equals("oid", columnName)) {
                 String oid = getSingletonValue(shardingValue).toString();
-                String dbName = consistentHash.getServerForMod(shardingIdHolder.getUserShardingIdForOrderId(oid));
-                result.add(dbName);
+                String dbName = consistentHash.getDatabaseForMod(shardingIdHolder.getUserShardingIdForOrderId(oid));
+                return Collections.singleton(dbName);
             }else if(Objects.equals("order_detail_id", columnName)) {
                 String orderDetailId = getSingletonValue(shardingValue).toString();
-                String server = consistentHash.getServerForMod(shardingIdHolder.getUserShardingIdForOrderDetailId(orderDetailId));
-                result.add(server);
+                String dbName = consistentHash.getDatabaseForMod(shardingIdHolder.getUserShardingIdForOrderDetailId(orderDetailId));
+                return Collections.singleton(dbName);
             }
-        }
-        if(!CollectionUtils.isEmpty(result))  {
-            return result;
         }
         throw new IllegalArgumentException("分库策略 未找到 oid 或者 uid");
     }

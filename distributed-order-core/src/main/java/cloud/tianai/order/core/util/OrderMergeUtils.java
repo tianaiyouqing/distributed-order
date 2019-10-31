@@ -1,5 +1,6 @@
 package cloud.tianai.order.core.util;
 
+import cloud.tianai.order.core.dataobject.BusinessOrderMasterDO;
 import cloud.tianai.order.core.dataobject.OrderDetailDO;
 import cloud.tianai.order.core.dataobject.OrderMasterDO;
 import cloud.tianai.order.core.dto.OrderMasterDTO;
@@ -27,6 +28,11 @@ public class OrderMergeUtils {
     }
 
     public static OrderMasterDTO merge(OrderMasterDO orderMasterDO, OrderMasterDTO orderMasterDTO) {
+        BeanUtils.copyProperties(orderMasterDO, orderMasterDTO);
+        return orderMasterDTO;
+    }
+
+    public static OrderMasterDTO merge(BusinessOrderMasterDO orderMasterDO, OrderMasterDTO orderMasterDTO) {
         BeanUtils.copyProperties(orderMasterDO, orderMasterDTO);
         return orderMasterDTO;
     }

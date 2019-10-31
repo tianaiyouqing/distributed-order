@@ -43,12 +43,55 @@ spring:
         url: jdbc:mysql://localhost:3306/distributed_order_8?serverTimezone=UTC&characterEncoding=UTF8
         username: root
         password: root
+      business_distributed_order_1:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/business_distributed_order_1?serverTimezone=UTC&characterEncoding=UTF8
+        username: root
+        password: root
+      business_distributed_order_2:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/business_distributed_order_2?serverTimezone=UTC&characterEncoding=UTF8
+        username: root
+        password: root
+      business_distributed_order_3:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/business_distributed_order_3?serverTimezone=UTC&characterEncoding=UTF8
+        username: root
+        password: root
+      business_distributed_order_4:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/business_distributed_order_4?serverTimezone=UTC&characterEncoding=UTF8
+        username: root
+        password: root
+      business_distributed_order_5:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/business_distributed_order_5?serverTimezone=UTC&characterEncoding=UTF8
+        username: root
+        password: root
+      business_distributed_order_6:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/business_distributed_order_6?serverTimezone=UTC&characterEncoding=UTF8
+        username: root
+        password: root
+      business_distributed_order_7:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/business_distributed_order_7?serverTimezone=UTC&characterEncoding=UTF8
+        username: root
+        password: root
+      business_distributed_order_8:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/business_distributed_order_8?serverTimezone=UTC&characterEncoding=UTF8
+        username: root
+        password: root
     prop:
-      sql.show: true
-
+      sql.show: false
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
 # mybatis config
 mybatis-plus:
-  mapper-locations: classpath:/mapper/*Mapper.xml
+  mapper-locations: classpath:/mapper/*Mapper.xml,classpath:/mapper/business/*Mapper.xml
   type-aliases-package: cloud.tianai.order.core.dataobject
   global-config:
     db-config:

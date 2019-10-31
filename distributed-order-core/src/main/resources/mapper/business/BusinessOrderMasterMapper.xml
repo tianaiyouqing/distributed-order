@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="cloud.tianai.order.core.business.mapper.BusinessOrderMasterMapper">
+
+    <resultMap id="baseResultMap" type="cloud.tianai.order.core.dataobject.BusinessOrderMasterDO">
+        <id column="oid" property="oid" jdbcType="VARCHAR" />
+        <result column="uid" property="uid" jdbcType="VARCHAR"/>
+        <result column="bid" property="bid" jdbcType="VARCHAR"/>
+        <result column="channel_id" property="channelId" jdbcType="VARCHAR"/>
+        <result column="platform_id" property="platformId" jdbcType="VARCHAR"/>
+        <result column="external_order_id" property="externalOrderId" jdbcType="VARCHAR"/>
+        <result column="order_status" property="orderStatus" jdbcType="INTEGER"/>
+        <result column="after_sales_status" property="afterSalesStatus" jdbcType="INTEGER"/>
+        <result column="platform_type" property="platformType" jdbcType="INTEGER"/>
+        <result column="order_amount" property="orderAmount" jdbcType="BIGINT"/>
+        <result column="coupon_price" property="couponPrice" jdbcType="BIGINT"/>
+        <result column="buyer_name" property="buyerName" jdbcType="VARCHAR"/>
+        <result column="buyer_phone" property="buyerPhone" jdbcType="VARCHAR"/>
+        <result column="pay_remark" property="payRemark" jdbcType="VARCHAR"/>
+        <result column="province" property="province" jdbcType="VARCHAR"/>
+        <result column="city" property="city" jdbcType="VARCHAR"/>
+        <result column="area" property="area" jdbcType="VARCHAR"/>
+        <result column="street" property="street" jdbcType="VARCHAR"/>
+        <result column="address_desc" property="addressDesc" jdbcType="VARCHAR"/>
+        <result column="payment_time" property="paymentTime" jdbcType="TIMESTAMP"/>
+        <result column="refund_time" property="refundTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <update id="updateOrderStatus">
+        update business_order_detail
+        set order_status = #{update.updateOrderStatus}
+        where
+            oid = #{update.oid}
+        <if test="update.uid != null and update.uid != ''">
+            and uid = #{update.uid}
+        </if>
+        <if test="update.bid != null and update.bid != ''">
+            and bid = #{update.bid}
+        </if>
+        <if test="update.oldOrderStatus != null">
+            and order_status = #{update.oldOrderStatus}
+        </if>
+    </update>
+    <sql id="flowSearchConditionSql">
+        <where>
+            <if test="search.uid != null and search.uid != ''">
+                and om.uid = #{search.uid}
+            </if>
+            <if test="search.bid != null and search.bid != ''">
+                and  om.bid = #{search.bid}
+            </if>
+            <if test="search.oid != null and search.oid != ''">
+                and om.oid = #{search.oid}
+            </if>
+            <if test="search.channelId != null and search.channelId != ''">
+                and om.channel_id = #{search.channelId}
+            </if>
+            <if test="search.platformId != null and search.platformId != ''">
+                and om.platform_id = #{search.platformId}
+            </if>
+            <if test="search.externalOrderId != null and search.externalOrderId != ''">
+                and om.external_order_id = #{search.externalOrderId}
+            </if>
+            <if test="search.orderStatus != null">
+                and om.order_status = #{search.orderStatus}
+            </if>
+            <if test="search.afterSalesStatus != null">
+                and om.after_sales_status = #{search.afterSalesStatus}
+            </if>
+            <if test="search.platformType != null">
+                and om.platform_type = #{search.platformType}
+            </if>
+            <if test="search.buyerName != null">
+                and om.buyer_name = #{search.buyerName}
+            </if>
+            <if test="search.buyerPhone != null">
+                and om.buyer_phone = #{search.buyerPhone}
+            </if>
+            <if test="search.createTimeBefore != null and search.creteTimeAfter != null">
+                and om.create_time between #{search.createTimeBefore} and #{search.creteTimeAfter}
+            </if>
+            <if test="lastFlowNum != null and lastFlowNum != ''">
+                and om.oid &lt; #{lastFlowNum}
+            </if>
+        </where>
+    </sql>
+    <select id="findFutureScrollPageNums" resultType="java.lang.String">
+        SELECT om.oid FROM business_order_master as om
+            <include refid="flowSearchConditionSql"/>
+        ORDER BY om.oid DESC
+        limit #{readNum}
+    </select>
+    <select id="findForScroll" resultMap="baseResultMap">
+        select
+            om.oid,
+            om.uid,
+            om.bid,
+            om.channel_id,
+            om.platform_id,
+            om.external_order_id,
+            om.order_status,
+            om.after_sales_status,
+            om.platform_type,
+            om.order_amount,
+            om.coupon_price,
+            om.buyer_name,
+            om.buyer_phone,
+            om.pay_remark,
+            om.province,
+            om.city,
+            om.area,
+            om.street,
+            om.address_desc,
+            om.payment_time,
+            om.refund_time,
+            om.create_time,
+            om.update_time
+        from business_order_master as om
+            <include refid="flowSearchConditionSql"/>
+        order by oid desc
+        limit #{pageSize}
+    </select>
+</mapper>

@@ -43,11 +43,11 @@ public class MybatisPlusConfiguration {
      * {@code @MapperScan()}
      * 这里可以扩展，比如使用配置文件来配置扫描Mapper的路径
      */
-    @Bean
-    public MapperScannerConfigurer mapperScannerConfigurer() {
-        MapperScannerConfigurer scannerConfigurer = new MapperScannerConfigurer();
-        scannerConfigurer.setBasePackage("cloud.tianai.order.core.mapper");
-        return scannerConfigurer;
-    }
+//    @Bean
+//    public MapperScannerConfigurer mapperScannerConfigurer() {
+//        MapperScannerConfigurer scannerConfigurer = new MapperScannerConfigurer();
+//        scannerConfigurer.setBasePackage("cloud.tianai.order.core.mapper");
+//        return scannerConfigurer;
+//    }
 }
 

@@ -23,8 +23,8 @@ public class UserOrderPageSearchServiceImplTest extends ApplicationTests {
 
     @Test
     public void test1() {
-        List<OrderMasterDO> result = orderMasterMapper.findtestSearch();
-        System.out.println(result);
+//        List<OrderMasterDO> result = orderMasterMapper.findtestSearch();
+//        System.out.println(result);
     }
 
     @Test
