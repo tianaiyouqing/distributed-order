@@ -1,4 +1,4 @@
-package cloud.tianai.order.core.listener.businessordersync.mq;
+package cloud.tianai.order.core.business.listener.sync.mq;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

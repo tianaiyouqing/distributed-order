@@ -1,10 +1,13 @@
-package cloud.tianai.order.core.listener.businessordersync.mq;
+package cloud.tianai.order.core.business.listener.sync.mq;
 
-import cloud.tianai.order.core.listener.businessordersync.AbstractBusinessOrderSyncListener;
+import cloud.tianai.order.core.business.listener.sync.AbstractBusinessOrderSyncListener;
+import cloud.tianai.order.core.util.canal.CanalResultData;
+import cloud.tianai.order.core.util.canal.CanalUtils;
 import com.aliyun.openservices.ons.api.*;
 import com.aliyun.openservices.ons.api.bean.ConsumerBean;
 import com.aliyun.openservices.ons.api.bean.Subscription;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -60,15 +63,21 @@ public class OnsMqBusinessOrderSyncListener extends AbstractBusinessOrderSyncLis
         byte[] body = message.getBody();
         String msgID = message.getMsgID();
         String key = message.getKey();
-        String shardingKey = message.getShardingKey();
+        String bodyJson;
         try {
-            System.out.println("body:" + new String(body, "utf-8"));
+            bodyJson = new String(body, "utf-8");
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        System.out.println("msgID:" + msgID);
-        System.out.println("key:" + key);
-        System.out.println("shardingKey:" + shardingKey);
+        CanalResultData data = CanalUtils.converterForJson(bodyJson);
+        Map<String, String> updateData = data.getData().get(0);
+        String oid = updateData.get("oid");
+        try {
+            super.onListener(oid);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Action.ReconsumeLater;
+        }
         return Action.CommitMessage;
     }
 

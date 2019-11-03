@@ -1,4 +1,4 @@
-package cloud.tianai.order.core.listener.businessordersync;
+package cloud.tianai.order.core.business.listener.sync;
 
 import cloud.tianai.order.core.basic.BasicOrderService;
 import cloud.tianai.order.core.basic.event.PostOrderInsertEvent;
@@ -16,26 +16,15 @@ import java.util.Objects;
  * @Description: 监听订单添加实现进行更新
  */
 @Slf4j
-@Service
 public class AbstractBusinessOrderSyncListener {
 
     @Autowired
     BusinessOrderSync businessOrderSync;
-    @Autowired
-    BasicOrderService basicOrderService;
 
-    protected void sync(OrderWrapper prderWrapper) {
-        businessOrderSync.sync(prderWrapper);
-        log.info("同步数据到商户库集群成功, oid: {}", prderWrapper.getOrderMaster().getOid());
+
+    protected void onListener(String oid) {
+        businessOrderSync.sync(oid);
+        log.info("同步数据到商户库集群成功, oid: {}", oid);
     }
 
-
-    protected void sync(String oid) {
-        OrderWrapper orderWrapper = basicOrderService.getOrderDescForOid(oid);
-        if(Objects.isNull(orderWrapper)) {
-            log.error("【商户订单同步】同步失败， 未找到订单 id:{}", oid);
-            return;
-        }
-        sync(orderWrapper);
-    }
 }

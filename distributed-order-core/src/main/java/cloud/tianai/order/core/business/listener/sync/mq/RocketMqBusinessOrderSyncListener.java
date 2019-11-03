@@ -1,10 +1,8 @@
-package cloud.tianai.order.core.listener.businessordersync.mq;
+package cloud.tianai.order.core.business.listener.sync.mq;
 
-import cloud.tianai.order.core.dataobject.OrderMasterDO;
-import cloud.tianai.order.core.listener.businessordersync.AbstractBusinessOrderSyncListener;
+import cloud.tianai.order.core.business.listener.sync.AbstractBusinessOrderSyncListener;
 import cloud.tianai.order.core.util.canal.CanalResultData;
 import cloud.tianai.order.core.util.canal.CanalUtils;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.*;
@@ -12,12 +10,9 @@ import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.common.protocol.heartbeat.MessageModel;
-import org.apache.rocketmq.spring.autoconfigure.RocketMQProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -73,7 +68,7 @@ public class RocketMqBusinessOrderSyncListener extends AbstractBusinessOrderSync
         String oid = updateData.get("oid");
         log.info("msgId: {}, oid: {}", msgId, oid);
         try {
-            sync(oid);
+            super.onListener(oid);
         } catch (Exception e) {
             e.printStackTrace();
             return ConsumeConcurrentlyStatus.RECONSUME_LATER;
