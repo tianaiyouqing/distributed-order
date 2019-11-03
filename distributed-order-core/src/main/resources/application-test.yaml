@@ -99,3 +99,17 @@ mybatis-plus:
       id-type: id_worker
   configuration:
     map-underscore-to-camel-case: true
+rocketmq:
+  order-sync:
+    name-server: localhost:9876
+    consumer-group: ORDER_SYNC_CONSUMER_GROUP
+    topic: mysql_sync_event_topic
+    consumer-thread-min: 20
+    consumer-thread-max: 64
+    # 要是匹配所有tag 则写 * ， 匹配多个tag 中间用 || 隔开， 例如 tagA || tagB || tagC
+    tag: order_sync
+order:
+  sync:
+    mq:
+      # 使用商业版的rocketMQ， 填ons， 使用普通rocketMQ 填 rocketMQ或者不填
+      type: rocketMQ
