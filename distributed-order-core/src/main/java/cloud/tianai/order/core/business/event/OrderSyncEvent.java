@@ -14,8 +14,8 @@ public class OrderSyncEvent extends ApplicationEvent {
      *
      * @param source the object on which the event initially occurred (never {@code null})
      */
-    public OrderSyncEvent(String oid) {
-        super(oid);
+    public OrderSyncEvent(String source) {
+        super(source);
     }
 
     @Override

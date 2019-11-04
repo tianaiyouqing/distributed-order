@@ -1,6 +1,6 @@
 package cloud.tianai.order.core.configuration.shardingjdbc;
 
-import cloud.tianai.order.core.holder.ApplicationHolder;
+import cloud.tianai.order.core.holder.ApplicationContextHolder;
 import cloud.tianai.order.core.id.ShardingIdHolder;
 import cloud.tianai.order.core.util.ConsistentHash;
 import io.shardingsphere.api.algorithm.sharding.ListShardingValue;
@@ -27,7 +27,7 @@ public abstract class AbstractOrderShardingAlgorithm implements ComplexKeysShard
     public Collection<String> doSharding(Collection<String> availableTargetNames, Collection<ShardingValue> shardingValues) {
         String logicName = getLogicName(availableTargetNames.iterator().next());
         ConsistentHash consistentHash = getConsistentHash(logicName, availableTargetNames);
-        ShardingIdHolder shardingIdHolder = ApplicationHolder.getApplicationContext().getBean(ShardingIdHolder.class);
+        ShardingIdHolder shardingIdHolder = ApplicationContextHolder.getApplicationContext().getBean(ShardingIdHolder.class);
         if(Objects.isNull(shardingIdHolder)) {
             throw new IllegalArgumentException("分库分表策略出错， 未找到 ShardingIdHolder");
         }
