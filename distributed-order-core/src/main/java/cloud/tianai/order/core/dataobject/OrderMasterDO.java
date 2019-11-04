@@ -34,7 +34,8 @@ public class OrderMasterDO {
     private Integer afterSalesStatus;
     /** 平台类型. */
     private Integer platformType;
-
+    /** 订单类型 0：货到付款， 1：在线付款. */
+    private Integer orderType;
     /** 订单总价. */
     private Long orderAmount;
     /** 优惠价格. */

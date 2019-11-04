@@ -1,11 +1,15 @@
 package cloud.tianai.order.core.business.listener.sync.mq;
 
 import cloud.tianai.order.core.business.listener.sync.AbstractBusinessOrderSyncListener;
+import cloud.tianai.order.core.business.listener.sync.AbstractCanalBusinessOrderSyncListener;
+import cloud.tianai.order.core.exception.OrderSyncException;
 import cloud.tianai.order.core.util.canal.CanalResultData;
 import cloud.tianai.order.core.util.canal.CanalUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
-import org.apache.rocketmq.client.consumer.listener.*;
+import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
+import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
+import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
 import org.apache.rocketmq.common.message.MessageExt;
@@ -23,8 +27,12 @@ import java.util.Map;
 @Slf4j
 @Service
 @EnableConfigurationProperties(RocketMqConfigProperties.class)
-@ConditionalOnProperty(prefix = "order.sync.mq", name = "type", havingValue = "rocketMQ", matchIfMissing = true)
-public class RocketMqBusinessOrderSyncListener extends AbstractBusinessOrderSyncListener implements MessageListenerConcurrently {
+@ConditionalOnProperty(
+        prefix = "order.sync.mq",
+        name = "type",
+        havingValue = "rocketMQ",
+        matchIfMissing = true)
+public class RocketMqBusinessOrderSyncListener extends AbstractCanalBusinessOrderSyncListener implements MessageListenerConcurrently {
 
     @Autowired
     private RocketMqConfigProperties properties;
@@ -64,11 +72,8 @@ public class RocketMqBusinessOrderSyncListener extends AbstractBusinessOrderSync
             throw new RuntimeException(e);
         }
         CanalResultData data = CanalUtils.converterForJson(bodyJson);
-        Map<String, String> updateData = data.getData().get(0);
-        String oid = updateData.get("oid");
-        log.info("msgId: {}, oid: {}", msgId, oid);
         try {
-            super.onListener(oid);
+            consume(data);
         } catch (Exception e) {
             e.printStackTrace();
             return ConsumeConcurrentlyStatus.RECONSUME_LATER;

@@ -29,6 +29,9 @@ public class OrderSaveForm {
     /** 第三方订单ID. */
     private String externalOrderId;
 
+    /** 订单类型. */
+    private Integer orderType;
+
     /** 用户信息. */
     private BasicUserInfo userInfo;
     /** 地址信息. */

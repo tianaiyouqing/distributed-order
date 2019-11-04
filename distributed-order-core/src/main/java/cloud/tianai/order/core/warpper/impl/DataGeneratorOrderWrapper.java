@@ -5,6 +5,7 @@ import cloud.tianai.order.core.dataobject.OrderDetailDO;
 import cloud.tianai.order.core.dataobject.OrderMasterDO;
 import cloud.tianai.order.core.enums.AfterSalesStatusEnum;
 import cloud.tianai.order.core.enums.OrderStatusEnum;
+import cloud.tianai.order.core.enums.OrderTypeEnum;
 import cloud.tianai.order.core.id.OrderIdGenerator;
 import cloud.tianai.order.core.information.AddressInfo;
 import cloud.tianai.order.core.information.BasicBusinessInfo;
@@ -94,6 +95,12 @@ public class DataGeneratorOrderWrapper implements OrderWrapper {
                 orderAmount = 0L;
             }
         }
+        // 订单类型
+        Integer orderType = orderSaveForm.getOrderType();
+        if(Objects.isNull(orderType)) {
+            orderType = OrderTypeEnum.CASH_ON_DELIVERY.getCode();
+        }
+        orderMasterDO.setOrderType(orderType);
         // 订单总价
         orderMasterDO.setOrderAmount(orderAmount);
         // 优惠价格

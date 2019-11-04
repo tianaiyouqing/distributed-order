@@ -13,6 +13,7 @@
         <result column="order_status" property="orderStatus" jdbcType="INTEGER"/>
         <result column="after_sales_status" property="afterSalesStatus" jdbcType="INTEGER"/>
         <result column="platform_type" property="platformType" jdbcType="INTEGER"/>
+        <result column="order_type" property="orderType" jdbcType="INTEGER"/>
         <result column="order_amount" property="orderAmount" jdbcType="BIGINT"/>
         <result column="coupon_price" property="couponPrice" jdbcType="BIGINT"/>
         <result column="buyer_name" property="buyerName" jdbcType="VARCHAR"/>
@@ -104,6 +105,7 @@
             om.order_status,
             om.after_sales_status,
             om.platform_type,
+            om.order_type,
             om.order_amount,
             om.coupon_price,
             om.buyer_name,
