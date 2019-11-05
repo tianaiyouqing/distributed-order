@@ -20,6 +20,10 @@ public class OrderSaveForm {
     private String payRemark;
     /** 优惠价格. */
     private Long couponPrice;
+    /** 自定义优惠价格. */
+    private Long customCouponPrice;
+    /** 优惠券的ID. */
+    private String couponId;
     /** 平台类型. */
     private Integer platformType;
     /** 渠道ID. */

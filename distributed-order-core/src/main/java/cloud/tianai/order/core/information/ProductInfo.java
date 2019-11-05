@@ -12,7 +12,13 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class ProductInfo {
     /** 商品ID. */
-    private String pid;
+    private String spuId;
+    /** skuID. */
+    private String skuId;
+    /** sku. */
+    private String sku;
+    /** sku描述. */
+    private String skuDesc;
     /** 商户ID. */
     private String bid;
     /** 商品名称. */
@@ -23,10 +29,6 @@ public class ProductInfo {
     private Integer productQuantity;
     /** 商品图标. */
     private String productIcon;
-    /** 商品SKU. */
-    private String productSku;
-    /** 商品SKU描述. */
-    private String productSkuDesc;
     /** 商品商品条形码. */
     private String productBarcode;
 }

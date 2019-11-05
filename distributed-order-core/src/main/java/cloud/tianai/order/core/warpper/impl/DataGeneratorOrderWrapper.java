@@ -66,6 +66,11 @@ public class DataGeneratorOrderWrapper implements OrderWrapper {
         orderMasterDO.setAfterSalesStatus(AfterSalesStatusEnum.DEFAULT.getCode());
         // 平台类型
         orderMasterDO.setPlatformType(orderSaveForm.getPlatformType());
+        // 优惠券ID
+        orderMasterDO.setCouponId(orderSaveForm.getCouponId());
+        // 自定义优惠价格
+        Long customCouponPrice = orderSaveForm.getCustomCouponPrice();
+        orderMasterDO.setCustomCouponPrice(customCouponPrice);
 
         Long orderAmount = 0L;
         String prevOrderDetailId = null;
@@ -75,13 +80,14 @@ public class DataGeneratorOrderWrapper implements OrderWrapper {
             OrderDetailDO orderDetailDO = new OrderDetailDO();
             orderDetailDO.setOrderDetailId(orderDetailId);
             orderDetailDO.setOid(oid);
-            orderDetailDO.setPid(productInfo.getPid());
+            orderDetailDO.setSpuId(productInfo.getSpuId());
+            orderDetailDO.setSkuId(productInfo.getSkuId());
+            orderDetailDO.setSku(productInfo.getSku());
+            orderDetailDO.setSkuDesc(productInfo.getSkuDesc());
             orderDetailDO.setProductName(productInfo.getProductName());
             orderDetailDO.setProductPrice(productInfo.getProductPrice());
             orderDetailDO.setProductQuantity(productInfo.getProductQuantity());
             orderDetailDO.setProductIcon(productInfo.getProductIcon());
-            orderDetailDO.setProductSku(productInfo.getProductSku());
-            orderDetailDO.setProductSkuDesc(productInfo.getProductSkuDesc());
             orderDetailDO.setProductBarcode(productInfo.getProductBarcode());
             // 记录总价格
             orderAmount += orderDetailDO.getProductPrice() * orderDetailDO.getProductQuantity();

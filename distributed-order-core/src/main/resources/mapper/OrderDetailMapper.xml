@@ -5,28 +5,30 @@
 
     <insert id="batchInsert">
         insert into order_detail
-        (`order_detail_id`
-        ,`oid`
-        ,`pid`
-        ,`product_name`
-        ,`product_price`
-        ,`product_quantity`
-        ,`product_icon`
-        ,`product_sku`
-        ,`product_sku_desc`
-        ,`product_barcode`)
+        (`order_detail_id`,
+        `oid`,
+        `spu_id`,
+        `sku_id`,
+        `sku`,
+        `sku_desc`,
+        `product_name`,
+        `product_price`,
+        `product_quantity`,
+        `product_icon`,
+        `product_barcode`)
         values
         <foreach collection="orderDetails" item="orderDetail" separator=",">
             (
             #{orderDetail.orderDetailId},
             #{orderDetail.oid},
-            #{orderDetail.pid},
+            #{orderDetail.spuId},
+            #{orderDetail.skuId},
+            #{orderDetail.sku},
+            #{orderDetail.skuDesc},
             #{orderDetail.productName},
             #{orderDetail.productPrice},
             #{orderDetail.productQuantity},
             #{orderDetail.productIcon},
-            #{orderDetail.productSku},
-            #{orderDetail.productSkuDesc},
             #{orderDetail.productBarcode}
             )
         </foreach>

@@ -20,7 +20,13 @@ public class BusinessOrderDetailDO{
     /** 订单ID. */
     private String oid;
     /** 商品ID. */
-    private String pid;
+    private String spuId;
+    /** skuID. */
+    private String skuId;
+    /** 商品SKU. */
+    private String sku;
+    /** 商品SKU描述. */
+    private String skuDesc;
     /** 商品名称. */
     private String productName;
     /** 商品价格. */
@@ -29,10 +35,6 @@ public class BusinessOrderDetailDO{
     private Integer productQuantity;
     /** 商品图标. */
     private String productIcon;
-    /** 商品SKU. */
-    private String productSku;
-    /** 商品SKU描述. */
-    private String productSkuDesc;
     /** 商品商品条形码. */
     private String productBarcode;
     /** 创建时间. */

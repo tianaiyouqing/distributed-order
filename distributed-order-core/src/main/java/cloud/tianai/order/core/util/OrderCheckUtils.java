@@ -5,10 +5,10 @@ import cloud.tianai.order.core.information.AddressInfo;
 import cloud.tianai.order.core.information.BasicBusinessInfo;
 import cloud.tianai.order.core.information.BasicUserInfo;
 import cloud.tianai.order.core.information.ProductInfo;
-import cloud.tianai.order.core.util.api.response.ApiResponse;
-import cloud.tianai.order.core.util.api.response.ApiResponseStatusEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
+import tianai.cloud.order.api.response.ApiResponse;
+import tianai.cloud.order.api.response.ApiResponseStatusEnum;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -62,14 +62,15 @@ public class OrderCheckUtils {
             if(Objects.isNull(productInfo)) {
                 return ApiResponse.ofCheckError("商品信息列表中有数据为空");
             }
-            String pid = productInfo.getPid();
+            String spuId = productInfo.getSpuId();
             String bid = productInfo.getBid();
             String productName = productInfo.getProductName();
             Long productPrice = productInfo.getProductPrice();
             Integer productQuantity = productInfo.getProductQuantity();
             String productIcon = productInfo.getProductIcon();
-            String productSku = productInfo.getProductSku();
-            if(StringUtils.isBlank(pid)) {
+            String sku = productInfo.getSku();
+            String skuId = productInfo.getSkuId();
+            if(StringUtils.isBlank(spuId)) {
                 return ApiResponse.ofCheckError("商品ID不能为空");
             }
             if(StringUtils.isBlank(bid)) {
@@ -87,7 +88,7 @@ public class OrderCheckUtils {
             if(StringUtils.isBlank(productIcon)) {
                 return ApiResponse.ofCheckError("商品图片不能为空");
             }
-            if(StringUtils.isBlank(productSku)) {
+            if(StringUtils.isBlank(skuId) && StringUtils.isBlank(sku)) {
                 return ApiResponse.ofCheckError("商品SKU不能为空");
             }
         }

@@ -37,13 +37,13 @@ public class TestOrderServiceTest extends ApplicationTests {
 
         detail.setOrderDetailId("11");
         detail.setOid("111111");
-        detail.setPid("777");
+        detail.setSpuId("777");
         detail.setProductName("商品");
         detail.setProductPrice(1L);
         detail.setProductQuantity(2);
         detail.setProductIcon("http://www.baidu.com");
-        detail.setProductSku("skuId");
-        detail.setProductSkuDesc("{aaa:bbb}");
+        detail.setSku("skuId");
+        detail.setSkuDesc("{aaa:bbb}");
         detail.setProductBarcode("123123");
 
         testOrderService.add(master, detail);

@@ -3,6 +3,7 @@ package cloud.tianai.order.core.business.listener.sync;
 import cloud.tianai.order.core.exception.OrderSyncException;
 import cloud.tianai.order.core.util.canal.CanalDataHolder;
 import cloud.tianai.order.core.util.canal.CanalResultData;
+import cloud.tianai.order.core.util.canal.CanalUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
@@ -21,20 +22,22 @@ public abstract class AbstractCanalBusinessOrderSyncListener extends AbstractBus
      * @throws OrderSyncException 同步失败抛出异常
      */
     public void consume(CanalResultData data) throws OrderSyncException {
-        if(data.getIsDdl()){
-            // 如果是ddl ，则不做任何操作
-            return;
+        if(
+                CanalUtils.MysqlType.INSERT.equals(data.getType())
+                || CanalUtils.MysqlType.UPDATE.equals(data.getType())
+                || CanalUtils.MysqlType.DELETE.equals(data.getType())
+        ){
+            before(data);
+
+            Map<String, String> updateData = data.getData().get(0);
+            // 读取对应的oid进行读取
+            String oid = updateData.get("oid");
+            super.onListener(oid);
+
+            after(data);
         }
+        // 如果是ddl，不做任何操作
 
-
-        before(data);
-
-        Map<String, String> updateData = data.getData().get(0);
-        // 读取对应的oid进行读取
-        String oid = updateData.get("oid");
-        super.onListener(oid);
-
-        after(data);
     }
 
     protected void after(CanalResultData data) {

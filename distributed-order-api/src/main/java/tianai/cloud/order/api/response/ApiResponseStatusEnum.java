@@ -1,4 +1,4 @@
-package cloud.tianai.order.core.util.api.response;
+package tianai.cloud.order.api.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

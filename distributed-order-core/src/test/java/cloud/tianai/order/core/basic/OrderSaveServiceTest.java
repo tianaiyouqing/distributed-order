@@ -54,36 +54,36 @@ public class OrderSaveServiceTest extends ApplicationTests {
                     ;
             Collection<ProductInfo> productInfos = new ArrayList<>(2);
             ProductInfo p1 = new ProductInfo();
-            p1.setPid(IdUtils.getNoRepetitionIdStr())
+            p1.setSpuId(IdUtils.getNoRepetitionIdStr())
                     .setBid(bid)
                     .setProductName("衣服")
                     .setProductPrice(5000L + i + 100)
                     .setProductQuantity(i % 100 + 1)
                     .setProductIcon("http://www.baidu.com")
-                    .setProductSku(IdUtils.getNoRepetitionIdStr())
-                    .setProductSkuDesc("[[aa:bb},{cc:dd}]")
+                    .setSku(IdUtils.getNoRepetitionIdStr())
+                    .setSkuDesc("[[aa:bb},{cc:dd}]")
                     .setProductBarcode("0001");
 
             ProductInfo p2 = new ProductInfo();
-            p2.setPid(IdUtils.getNoRepetitionIdStr())
+            p2.setSpuId(IdUtils.getNoRepetitionIdStr())
                     .setBid(bid)
                     .setProductName("裤子")
                     .setProductPrice(3000L + i + 100)
                     .setProductQuantity(i % 100 + 1)
                     .setProductIcon("http://www.baidu.com")
-                    .setProductSku("12312312313")
-                    .setProductSkuDesc("[[aa:bb},{cc:dd}]")
+                    .setSku("12312312313")
+                    .setSkuDesc("[[aa:bb},{cc:dd}]")
                     .setProductBarcode("0002");
 
             ProductInfo p3 = new ProductInfo();
-            p3.setPid(IdUtils.getNoRepetitionIdStr())
+            p3.setSpuId(IdUtils.getNoRepetitionIdStr())
                     .setBid(bid)
                     .setProductName("鞋子")
                     .setProductPrice(6000L)
                     .setProductQuantity(i % 100 + 1)
                     .setProductIcon("http://www.baidu.com")
-                    .setProductSku(IdUtils.getNoRepetitionIdStr())
-                    .setProductSkuDesc("[[aa:bb},{cc:dd}]")
+                    .setSku(IdUtils.getNoRepetitionIdStr())
+                    .setSkuDesc("[[aa:bb},{cc:dd}]")
                     .setProductBarcode("0003");
             productInfos.add(p1);
             productInfos.add(p2);

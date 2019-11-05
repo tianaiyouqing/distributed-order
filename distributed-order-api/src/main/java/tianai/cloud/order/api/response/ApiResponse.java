@@ -1,4 +1,4 @@
-package cloud.tianai.order.core.util.api.response;
+package tianai.cloud.order.api.response;
 
 import lombok.Data;
 
@@ -61,5 +61,9 @@ public class ApiResponse<T> implements Serializable {
 
     public static <T> ApiResponse<T> ofStatus(ApiResponseStatusEnum status) {
         return new ApiResponse(status.getCode(), status.getStandardMessage(), null);
+    }
+
+    public boolean isSuccess() {
+        return ApiResponseStatusEnum.SUCCESS.getCode().equals(this.code);
     }
 }

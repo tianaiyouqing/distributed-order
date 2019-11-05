@@ -27,6 +27,8 @@ public class OrderMasterDO {
     private String platformId;
     /** 第三方订单ID. */
     private String externalOrderId;
+    /** 优惠券ID. */
+    private String couponId;
 
     /** 订单状态. */
     private Integer orderStatus;
@@ -40,7 +42,8 @@ public class OrderMasterDO {
     private Long orderAmount;
     /** 优惠价格. */
     private Long couponPrice;
-
+    /** 自定义优惠价格. */
+    private Long customCouponPrice;
     /** 买家名称. */
     private String buyerName;
     /** 买家手机号. */

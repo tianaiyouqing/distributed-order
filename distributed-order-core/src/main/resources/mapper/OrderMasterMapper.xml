@@ -10,12 +10,14 @@
         <result column="channel_id" property="channelId" jdbcType="VARCHAR"/>
         <result column="platform_id" property="platformId" jdbcType="VARCHAR"/>
         <result column="external_order_id" property="externalOrderId" jdbcType="VARCHAR"/>
+        <result column="coupon_id" property="couponId" jdbcType="VARCHAR"/>
         <result column="order_status" property="orderStatus" jdbcType="INTEGER"/>
         <result column="after_sales_status" property="afterSalesStatus" jdbcType="INTEGER"/>
         <result column="platform_type" property="platformType" jdbcType="INTEGER"/>
         <result column="order_type" property="orderType" jdbcType="INTEGER"/>
         <result column="order_amount" property="orderAmount" jdbcType="BIGINT"/>
         <result column="coupon_price" property="couponPrice" jdbcType="BIGINT"/>
+        <result column="custom_coupon_price" property="customCouponPrice" jdbcType="BIGINT"/>
         <result column="buyer_name" property="buyerName" jdbcType="VARCHAR"/>
         <result column="buyer_phone" property="buyerPhone" jdbcType="VARCHAR"/>
         <result column="pay_remark" property="payRemark" jdbcType="VARCHAR"/>
@@ -102,12 +104,14 @@
             om.channel_id,
             om.platform_id,
             om.external_order_id,
+            om.coupon_id,
             om.order_status,
             om.after_sales_status,
             om.platform_type,
             om.order_type,
             om.order_amount,
             om.coupon_price,
+            om.custom_coupon_price,
             om.buyer_name,
             om.buyer_phone,
             om.pay_remark,
