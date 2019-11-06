@@ -6,6 +6,7 @@ import cloud.tianai.order.core.business.service.impl.save.BusinessOrderSync;
 import cloud.tianai.order.core.exception.OrderSyncException;
 import cloud.tianai.order.core.warpper.OrderWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,10 @@ public abstract class AbstractBusinessOrderSyncListener {
 
 
     protected void onListener(String oid) throws OrderSyncException {
+        if(StringUtils.isBlank(oid)) {
+            log.warn("同步订单警告，oid为空");
+            return;
+        }
         businessOrderSync.sync(oid);
         log.info("同步数据到商户库集群成功, oid: {}", oid);
     }

@@ -22,10 +22,10 @@ public class OrderInterceptorChainHolder {
 
     private static Map<Class<? extends OrderInterceptor>, OrderInterceptorChain> cache = new HashMap<>(16);
 
+    /** 空的拦截器链. */
     private static OrderInterceptorChain EMPTY = new OrderInterceptorChain(new ArrayList<>(0));
 
     public static <T,R> OrderInterceptorChain<T,R> getChain(Class<? extends OrderInterceptor> clazz) {
-
         OrderInterceptorChain cacheResult = cache.get(clazz);
         if(Objects.nonNull(cacheResult)) {
             return (OrderInterceptorChain<T,R>) cacheResult;
@@ -48,18 +48,4 @@ public class OrderInterceptorChainHolder {
             throw new IllegalArgumentException("组装拦截器失败， 传入的泛型不能和获取到的泛型相匹配");
         }
     }
-
-    public static void main(String[] args) {
-        BuyerNameOrderCreateInterceptor buyerNameOrderCreateInterceptor = new BuyerNameOrderCreateInterceptor();
-        UidOrderCreateInterceptor uidOrderCreateInterceptor = new UidOrderCreateInterceptor();
-
-        List<OrderInterceptor> orderInterceptors = new ArrayList<>();
-        orderInterceptors.add(buyerNameOrderCreateInterceptor);
-        orderInterceptors.add(uidOrderCreateInterceptor);
-
-        orderInterceptors.sort(new AnnotationAwareOrderComparator());
-
-        System.out.println(orderInterceptors);
-    }
-
 }

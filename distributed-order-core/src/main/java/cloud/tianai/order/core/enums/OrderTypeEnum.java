@@ -1,5 +1,6 @@
 package cloud.tianai.order.core.enums;
 
+import cloud.tianai.order.core.util.enums.CodeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

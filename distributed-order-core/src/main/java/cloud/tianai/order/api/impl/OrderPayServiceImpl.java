@@ -56,7 +56,7 @@ public class OrderPayServiceImpl implements OrderPayService {
         //1. 校验参数
         ApiResponse checkResult = OrderParamCheckUtils.checkNecessaryParam(paramDTO);
         if (!checkResult.isSuccess()) {
-            // 如果参数校验失败，则世界把错误信息返回
+            // 如果参数校验失败，把错误信息返回
             return checkResult;
         }
         // 1.2 执行拦截器
@@ -75,8 +75,7 @@ public class OrderPayServiceImpl implements OrderPayService {
                 return ApiResponse.ofError(e.getMessage());
             }
         }
-
-
+        
         //3. 扣库存
         ApiResponse<String> stockResult = null;
         if (reduceStock) {

@@ -1,8 +1,6 @@
 package cloud.tianai.order.core.business.listener.sync.mq;
 
-import cloud.tianai.order.core.business.listener.sync.AbstractBusinessOrderSyncListener;
 import cloud.tianai.order.core.business.listener.sync.AbstractCanalBusinessOrderSyncListener;
-import cloud.tianai.order.core.exception.OrderSyncException;
 import cloud.tianai.order.core.util.canal.CanalResultData;
 import cloud.tianai.order.core.util.canal.CanalUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -71,9 +69,9 @@ public class RocketMqBusinessOrderSyncListener extends AbstractCanalBusinessOrde
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
-        CanalResultData data = CanalUtils.converterForJson(bodyJson);
+        CanalResultData<List<Map<String, String>>> data = CanalUtils.<List<Map<String, String>>>converterForJson(bodyJson);
         try {
-            consume(data);
+            consumeForListMap(data);
         } catch (Exception e) {
             e.printStackTrace();
             return ConsumeConcurrentlyStatus.RECONSUME_LATER;

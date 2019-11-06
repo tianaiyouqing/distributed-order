@@ -1,11 +1,15 @@
 package cloud.tianai.order.core.business.listener.sync;
 
+import cloud.tianai.order.core.dataobject.OrderDetailDO;
+import cloud.tianai.order.core.dataobject.OrderMasterDO;
 import cloud.tianai.order.core.exception.OrderSyncException;
 import cloud.tianai.order.core.util.canal.CanalDataHolder;
 import cloud.tianai.order.core.util.canal.CanalResultData;
 import cloud.tianai.order.core.util.canal.CanalUtils;
+import cloud.tianai.order.core.util.canal.MysqlEventType;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,26 +22,50 @@ public abstract class AbstractCanalBusinessOrderSyncListener extends AbstractBus
 
     /**
      * 消费canal传来的数据
+     *
      * @param data canal传来的数据
      * @throws OrderSyncException 同步失败抛出异常
      */
-    public void consume(CanalResultData data) throws OrderSyncException {
-        if(
-                CanalUtils.MysqlType.INSERT.equals(data.getType())
-                || CanalUtils.MysqlType.UPDATE.equals(data.getType())
-                || CanalUtils.MysqlType.DELETE.equals(data.getType())
-        ){
+    public void consumeForMaster(CanalResultData<OrderMasterDO> data) throws OrderSyncException {
+        if (MysqlEventType.INSERT.equals(data.getType())
+                || MysqlEventType.UPDATE.equals(data.getType())
+                || MysqlEventType.DELETE.equals(data.getType())
+        ) {
             before(data);
-
-            Map<String, String> updateData = data.getData().get(0);
+            String oid = data.getData().getOid();
             // 读取对应的oid进行读取
-            String oid = updateData.get("oid");
             super.onListener(oid);
-
             after(data);
         }
         // 如果是ddl，不做任何操作
+    }
 
+    public void consumeForDetail(CanalResultData<OrderDetailDO> data) throws OrderSyncException {
+        if (MysqlEventType.INSERT.equals(data.getType())
+                || MysqlEventType.UPDATE.equals(data.getType())
+                || MysqlEventType.DELETE.equals(data.getType())
+        ) {
+            before(data);
+            String oid = data.getData().getOid();
+            // 读取对应的oid进行读取
+            super.onListener(oid);
+            after(data);
+        }
+        // 如果是ddl，不做任何操作
+    }
+
+    public void consumeForListMap(CanalResultData<List<Map<String, String>>> data) throws OrderSyncException {
+        if (MysqlEventType.INSERT.equals(data.getType())
+                || MysqlEventType.UPDATE.equals(data.getType())
+                || MysqlEventType.DELETE.equals(data.getType())
+        ) {
+            before(data);
+            String oid = data.getData().get(0).get("oid");
+            // 读取对应的oid进行读取
+            super.onListener(oid);
+            after(data);
+        }
+        // 如果是ddl，不做任何操作
     }
 
     protected void after(CanalResultData data) {

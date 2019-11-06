@@ -12,6 +12,8 @@
     </parent>
     <modules>
         <module>distributed-order-core</module>
+        <module>distributed-order-api</module>
+        <module>distributed-order-common</module>
     </modules>
     <groupId>cloud.tianai</groupId>
     <artifactId>distributed-order</artifactId>
@@ -43,14 +45,6 @@
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-    </dependencies>
 </project>

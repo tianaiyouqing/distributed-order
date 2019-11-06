@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-public class CanalResultData {
+public class CanalResultData<T> {
 
     private long id;
 
@@ -18,7 +18,7 @@ public class CanalResultData {
     private List<String> pkNames;
     private Boolean isDdl;
     /** type类型 INSERT  UPDATE  DELETE CREATE ALTER . */
-    private String type;
+    private MysqlEventType type;
     // binlog executeTime
     private Long es;
     // dml build timeStamp
@@ -30,7 +30,7 @@ public class CanalResultData {
     /** mysql类型. */
     private Map<String, String> mysqlType;
     /** 修改后的数据. */
-    private List<Map<String, String>> data;
+    private T data;
     /** 如果是修改操作，显示修改前的数据. */
     private List<Map<String, String>> old;
 }

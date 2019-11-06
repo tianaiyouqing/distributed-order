@@ -1,6 +1,5 @@
 package cloud.tianai.order.core.business.listener.sync.mq;
 
-import cloud.tianai.order.core.business.listener.sync.AbstractBusinessOrderSyncListener;
 import cloud.tianai.order.core.business.listener.sync.AbstractCanalBusinessOrderSyncListener;
 import cloud.tianai.order.core.util.canal.CanalResultData;
 import cloud.tianai.order.core.util.canal.CanalUtils;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -73,9 +73,9 @@ public class OnsMqBusinessOrderSyncListener extends AbstractCanalBusinessOrderSy
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
-        CanalResultData data = CanalUtils.converterForJson(bodyJson);
+        CanalResultData<List<Map<String, String>>> data = CanalUtils.<List<Map<String, String>>>converterForJson(bodyJson);
         try {
-            consume(data);
+            consumeForListMap(data);
         } catch (Exception e) {
             e.printStackTrace();
             return Action.ReconsumeLater;
