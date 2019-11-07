@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StopWatch;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,26 +25,33 @@ public class BusinessOrderPageSearchImplTest extends ApplicationTests {
 
 
         OrderSearchForm search = new OrderSearchForm();
-        search.setChannelId("android_001");
-        search.setBid("1189895382025383938");
+//        search.setChannelId("android_001");
+        search.setBid("0001");
         List<String> lastNums =
-                businessOrderPageSearch.listFutureScrollPageNums(search, null, 5, 100);
+                businessOrderPageSearch.listFutureScrollPageNums(search, null, 1000, 200);
 
 
         System.out.println("lastNums =====");
         System.out.println(GsonUtils.gsonString(lastNums));
 
         String lastFlowNum  = null;
-
-        List<OrderMasterDTO> result = businessOrderPageSearch.scrollSearch(search, lastFlowNum, 5);
-
-        result.stream().map(OrderMasterDTO :: getOid).forEach(System.out :: println);
+        StopWatch s2 = new StopWatch();
+        s2.start();
+        List<OrderMasterDTO> result = businessOrderPageSearch.scrollSearch(search, lastFlowNum, 1000);
+        s2.stop();
 
         while (!CollectionUtils.isEmpty(result)) {
+            System.out.println("第一个订单号: [ "
+                    + result.get(0).getOid()
+                    +"], 最后一个订单ID:[ "
+                    + result.get(result.size()-1).getOid()
+                    + "], 总查询数: " + result.size());
             lastFlowNum = result.get(result.size() - 1).getOid();
-            result = businessOrderPageSearch.scrollSearch(search, lastFlowNum, 5);
-            System.out.println("====================");
-            result.stream().map(OrderMasterDTO :: getOid).forEach(System.out :: println);
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
+            result = businessOrderPageSearch.scrollSearch(search, lastFlowNum, 1000);
+            stopWatch.stop();
+            System.out.println("当前查询耗时:" + stopWatch.getTotalTimeMillis() +"ms");
         }
     }
 
