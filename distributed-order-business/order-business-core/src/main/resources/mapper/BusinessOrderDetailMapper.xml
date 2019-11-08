@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="cloud.tianai.order.business.core.mapper.BusinessOrderDetailMapper">
+
+    <insert id="batchInsert">
+        insert into business_order_detail
+        (`order_detail_id`,
+        `oid`,
+        `spu_id`,
+        `sku_id`,
+        `sku`,
+        `sku_desc`,
+        `product_name`,
+        `product_price`,
+        `product_quantity`,
+        `product_icon`,
+        `product_barcode`)
+        values
+        <foreach collection="orderDetails" item="orderDetail" separator=",">
+            (
+            #{orderDetail.orderDetailId},
+            #{orderDetail.oid},
+            #{orderDetail.spuId},
+            #{orderDetail.skuId},
+            #{orderDetail.sku},
+            #{orderDetail.skuDesc},
+            #{orderDetail.productName},
+            #{orderDetail.productPrice},
+            #{orderDetail.productQuantity},
+            #{orderDetail.productIcon},
+            #{orderDetail.productBarcode}
+            )
+        </foreach>
+    </insert>
+</mapper>

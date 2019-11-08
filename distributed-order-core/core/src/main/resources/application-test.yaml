@@ -1,0 +1,76 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    db:
+      distributed_order_1:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/distributed_order_1?serverTimezone=UTC&characterEncoding=UTF8
+        username: root
+        password: root
+      distributed_order_2:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/distributed_order_2?serverTimezone=UTC&characterEncoding=UTF8
+        username: root
+        password: root
+      distributed_order_3:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/distributed_order_3?serverTimezone=UTC&characterEncoding=UTF8
+        username: root
+        password: root
+      distributed_order_4:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/distributed_order_4?serverTimezone=UTC&characterEncoding=UTF8
+        username: root
+        password: root
+      distributed_order_5:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/distributed_order_5?serverTimezone=UTC&characterEncoding=UTF8
+        username: root
+        password: root
+      distributed_order_6:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/distributed_order_6?serverTimezone=UTC&characterEncoding=UTF8
+        username: root
+        password: root
+      distributed_order_7:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/distributed_order_7?serverTimezone=UTC&characterEncoding=UTF8
+        username: root
+        password: root
+      distributed_order_8:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/distributed_order_8?serverTimezone=UTC&characterEncoding=UTF8
+        username: root
+        password: root
+    prop:
+      sql.show: false
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: 5a718b26-ebfc-4ebd-8f74-789b1f812621
+  application:
+    name: distribute-order-core
+  main:
+    allow-bean-definition-overriding: true
+# mybatis config
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  type-aliases-package: cloud.tianai.order.core.common.dataobject
+  global-config:
+    db-config:
+      #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+      id-type: id_worker
+  configuration:
+    map-underscore-to-camel-case: true
+dubbo:
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: spring-cloud://localhost
