@@ -7,5 +7,5 @@ import cloud.tianai.order.core.api.basic.BasicOrderService;
  * @Date: 2019/10/25 13:45
  * @Description: 抽象的技术业务层
  */
-public abstract class AbstractBasicOrderService extends AbstractOrderStatusService implements BasicOrderService {
+public abstract class AbstractBasicBasicBasicOrderService extends AbstractBasicBasicOrderStatusService implements BasicOrderService {
 }

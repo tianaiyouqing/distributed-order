@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: 天爱有情
@@ -27,7 +28,7 @@ public class OrderSearchForm {
     private String externalOrderId;
 
     /** 订单状态. */
-    private Integer orderStatus;
+    private List<Integer> orderStatusList;
     /** 售后状态. */
     private Integer afterSalesStatus;
     /** 平台类型. */

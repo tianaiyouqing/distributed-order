@@ -4,6 +4,7 @@ import cloud.tianai.order.common.dto.OrderMasterDTO;
 import cloud.tianai.order.common.dto.PageInfo;
 import cloud.tianai.order.search.exception.OrderSearchException;
 import cloud.tianai.order.search.form.OrderSearchForm;
+import cloud.tianai.order.search.response.ScrollSearchResponse;
 import lombok.Data;
 
 import java.util.List;
@@ -52,7 +53,7 @@ public abstract class AbstractOrderPageSearchService implements OrderPageSearchS
     }
 
     @Override
-    public List<OrderMasterDTO> scrollSearch(OrderSearchForm search, String lastFlowNum, Integer pageSize) {
+    public ScrollSearchResponse<OrderMasterDTO> scrollSearch(OrderSearchForm search, String lastFlowNum, Integer pageSize) {
         checkParamOfThrow(search);
         pageSize = useDefaultPageSizeIfNecessary(pageSize);
         return doScrollSearch(search, lastFlowNum, pageSize);
@@ -119,5 +120,5 @@ public abstract class AbstractOrderPageSearchService implements OrderPageSearchS
      * @param pageSize    显示多少条
      * @return List<OrderMasterDTO>
      */
-    protected abstract List<OrderMasterDTO> doScrollSearch(OrderSearchForm search, String lastFlowNum, Integer pageSize);
+    protected abstract ScrollSearchResponse<OrderMasterDTO> doScrollSearch(OrderSearchForm search, String lastFlowNum, Integer pageSize);
 }

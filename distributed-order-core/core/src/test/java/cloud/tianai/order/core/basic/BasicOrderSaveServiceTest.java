@@ -2,7 +2,7 @@ package cloud.tianai.order.core.basic;
 
 import cloud.tianai.order.common.util.id.IdUtils;
 import cloud.tianai.order.core.OrderCoreApplicationTests;
-import cloud.tianai.order.core.api.basic.OrderSaveService;
+import cloud.tianai.order.core.api.basic.BasicOrderSaveService;
 import cloud.tianai.order.core.api.basic.form.OrderSaveForm;
 import cloud.tianai.order.core.api.basic.information.AddressInfo;
 import cloud.tianai.order.core.api.basic.information.BasicBusinessInfo;
@@ -19,10 +19,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class OrderSaveServiceTest extends OrderCoreApplicationTests {
+public class BasicOrderSaveServiceTest extends OrderCoreApplicationTests {
 
     @Autowired
-    private OrderSaveService orderSaveService;
+    private BasicOrderSaveService basicOrderSaveService;
 
     @Test
     public void insertOrder() {
@@ -99,7 +99,7 @@ public class OrderSaveServiceTest extends OrderCoreApplicationTests {
             res.add(orderSaveForm);
             StopWatch sw = new StopWatch();
             sw.start();
-            orderSaveService.insertOrder(orderSaveForm);
+            basicOrderSaveService.insertOrder(orderSaveForm);
             sw.stop();
             System.out.println("耗时:" + sw.getTotalTimeMillis() +"ms");
         }

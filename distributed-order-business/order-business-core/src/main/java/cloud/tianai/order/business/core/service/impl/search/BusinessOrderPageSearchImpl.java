@@ -6,12 +6,15 @@ import cloud.tianai.order.business.core.mapper.BusinessOrderMasterMapper;
 import cloud.tianai.order.business.core.util.OrderMergeUtils;
 import cloud.tianai.order.common.dto.OrderMasterDTO;
 import cloud.tianai.order.common.dto.PageInfo;
+import cloud.tianai.order.core.api.basic.enums.OrderStatusEnum;
 import cloud.tianai.order.search.AbstractOrderPageSearchService;
 import cloud.tianai.order.search.exception.OrderSearchException;
 import cloud.tianai.order.search.form.OrderSearchForm;
+import cloud.tianai.order.search.response.ScrollSearchResponse;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
@@ -80,9 +83,17 @@ public class BusinessOrderPageSearchImpl extends AbstractOrderPageSearchService 
     }
 
     @Override
-    protected List<OrderMasterDTO> doScrollSearch(OrderSearchForm search, String lastFlowNum, Integer pageSize) {
+    protected ScrollSearchResponse<OrderMasterDTO> doScrollSearch(OrderSearchForm search, String lastFlowNum, Integer pageSize) {
         List<BusinessOrderMasterDO> orderMasterDOList = businessOrderMasterMapper.findForScroll(search, lastFlowNum, pageSize);
-        return converter(orderMasterDOList);
+        List<OrderMasterDTO> converter = converter(orderMasterDOList);
+        ScrollSearchResponse<OrderMasterDTO> result = new ScrollSearchResponse<>();
+        result.setData(converter);
+        result.setSearchForm(search);
+        if(!CollectionUtils.isEmpty(converter)) {
+            String newLastFlowNum = converter.get(converter.size() - 1).getOid();
+            result.setLastFlowNum(newLastFlowNum);
+        }
+        return result;
     }
 
     private Wrapper<BusinessOrderMasterDO> warpSearchParam(OrderSearchForm search) {
@@ -90,13 +101,14 @@ public class BusinessOrderPageSearchImpl extends AbstractOrderPageSearchService 
 
         String bid = search.getBid();
         lambdaQueryWrapper.eq(BusinessOrderMasterDO::getBid, bid);
+        lambdaQueryWrapper.ne(BusinessOrderMasterDO::getOrderStatus, OrderStatusEnum.REMOVE.getCode());
 
         String uid = search.getUid();
         String oid = search.getOid();
         String channelId = search.getChannelId();
         String platformId = search.getPlatformId();
         String externalOrderId = search.getExternalOrderId();
-        Integer orderStatus = search.getOrderStatus();
+        List<Integer> orderStatusList = search.getOrderStatusList();
         Integer afterSalesStatus = search.getAfterSalesStatus();
         Integer platformType = search.getPlatformType();
         String buyerName = search.getBuyerName();
@@ -119,8 +131,12 @@ public class BusinessOrderPageSearchImpl extends AbstractOrderPageSearchService 
         if (StringUtils.isNotBlank(externalOrderId)) {
             lambdaQueryWrapper.eq(BusinessOrderMasterDO::getExternalOrderId, externalOrderId);
         }
-        if(Objects.nonNull(orderStatus)) {
-            lambdaQueryWrapper.eq(BusinessOrderMasterDO::getOrderStatus, orderStatus);
+        if(!CollectionUtils.isEmpty(orderStatusList)) {
+            if(orderStatusList.size() == 1) {
+                lambdaQueryWrapper.eq(BusinessOrderMasterDO::getOrderStatus, orderStatusList.get(0));
+            }else {
+                lambdaQueryWrapper.in(BusinessOrderMasterDO::getOrderStatus, orderStatusList);
+            }
         }
         if(Objects.nonNull(afterSalesStatus)) {
             lambdaQueryWrapper.eq(BusinessOrderMasterDO::getAfterSalesStatus, afterSalesStatus);

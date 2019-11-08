@@ -1,6 +1,6 @@
 package cloud.tianai.order.core.basic.impl;
 
-import cloud.tianai.order.core.api.basic.OrderSaveService;
+import cloud.tianai.order.core.api.basic.BasicOrderSaveService;
 import cloud.tianai.order.core.basic.event.PostOrderInsertEvent;
 import cloud.tianai.order.core.basic.event.PreOrderInsertEvent;
 import cloud.tianai.order.core.api.basic.form.OrderSaveForm;
@@ -20,7 +20,7 @@ import cloud.tianai.order.common.response.ApiResponseStatusEnum;
  * @Description: 抽象的订单保存业务
  */
 @Slf4j
-public abstract class AbstractOrderSaveService implements OrderSaveService {
+public abstract class AbstractBasicOrderSaveService implements BasicOrderSaveService {
 
     /**
      * 这里直接使用@Transactional注解即可， 逻辑是下的单只会下到一个库中，所以只需要使用对应库的事物即可， 这点shardingJdbc已经实现了

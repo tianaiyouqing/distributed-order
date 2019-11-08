@@ -2,7 +2,7 @@ package cloud.tianai.order.core.controller.basic;
 
 import cloud.tianai.order.common.response.ApiResponse;
 import cloud.tianai.order.common.util.enums.EnumUtils;
-import cloud.tianai.order.core.api.basic.OrderStatusService;
+import cloud.tianai.order.core.api.basic.BasicOrderStatusService;
 import cloud.tianai.order.core.api.basic.enums.OrderStatusEnum;
 import cloud.tianai.order.core.api.basic.exception.OrderStatusUpdateException;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class BasicOrderStatusController {
 
-    private final OrderStatusService orderStatusService;
+    private final BasicOrderStatusService basicOrderStatusService;
 
     @PostMapping("/update/{oid}/{orderStatus}")
     public ApiResponse<String> updateOrderStatusForOid(@PathVariable("oid") String oid,
@@ -32,7 +32,7 @@ public class BasicOrderStatusController {
             return ApiResponse.ofCheckError("订单状态错误");
         }
         try {
-            orderStatusService.updateOrderStatusForOid(oid, statusEnum);
+            basicOrderStatusService.updateOrderStatusForOid(oid, statusEnum);
         } catch (OrderStatusUpdateException e) {
             return ApiResponse.ofError(e.getMessage());
         }
@@ -50,7 +50,7 @@ public class BasicOrderStatusController {
             return ApiResponse.ofCheckError("订单状态错误");
         }
         try {
-            orderStatusService.updateOrderStatusForOid(oid, oldStatusEnum, statusEnum);
+            basicOrderStatusService.updateOrderStatusForOid(oid, oldStatusEnum, statusEnum);
         } catch (OrderStatusUpdateException e) {
             return ApiResponse.ofError(e.getMessage());
         }
@@ -66,7 +66,7 @@ public class BasicOrderStatusController {
             return ApiResponse.ofCheckError("订单状态错误");
         }
         try {
-            orderStatusService.updateOrderStatusForOidAndUid(oid, uid, statusEnum);
+            basicOrderStatusService.updateOrderStatusForOidAndUid(oid, uid, statusEnum);
         } catch (OrderStatusUpdateException e) {
             return ApiResponse.ofError(e.getMessage());
         }
@@ -84,7 +84,7 @@ public class BasicOrderStatusController {
             return ApiResponse.ofCheckError("订单状态错误");
         }
         try {
-            orderStatusService.updateOrderStatusForOidAndUid(oid, uid, oldStatusEnum, statusEnum);
+            basicOrderStatusService.updateOrderStatusForOidAndUid(oid, uid, oldStatusEnum, statusEnum);
         } catch (OrderStatusUpdateException e) {
             return ApiResponse.ofError(e.getMessage());
         }
@@ -101,7 +101,7 @@ public class BasicOrderStatusController {
             return ApiResponse.ofCheckError("订单状态错误");
         }
         try {
-            orderStatusService.updateOrderStatusForOidAndBid(oid, bid, statusEnum);
+            basicOrderStatusService.updateOrderStatusForOidAndBid(oid, bid, statusEnum);
         } catch (OrderStatusUpdateException e) {
             return ApiResponse.ofError(e.getMessage());
         }
@@ -119,7 +119,7 @@ public class BasicOrderStatusController {
             return ApiResponse.ofCheckError("订单状态错误");
         }
         try {
-            orderStatusService.updateOrderStatusForOidAndBid(oid, bid, oldStatusEnum, statusEnum);
+            basicOrderStatusService.updateOrderStatusForOidAndBid(oid, bid, oldStatusEnum, statusEnum);
         } catch (OrderStatusUpdateException e) {
             return ApiResponse.ofError(e.getMessage());
         }

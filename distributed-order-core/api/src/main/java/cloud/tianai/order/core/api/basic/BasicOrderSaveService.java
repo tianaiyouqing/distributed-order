@@ -9,7 +9,7 @@ import cloud.tianai.order.core.common.wrapper.OrderWrapper;
  * @Date: 2019/10/24 18:55
  * @Description: 订单存储
  */
-public interface OrderSaveService {
+public interface BasicOrderSaveService {
 
     /**
      * 添加订单

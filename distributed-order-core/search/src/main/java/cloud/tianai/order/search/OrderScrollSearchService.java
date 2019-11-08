@@ -2,6 +2,7 @@ package cloud.tianai.order.search;
 
 import cloud.tianai.order.common.dto.OrderMasterDTO;
 import cloud.tianai.order.search.form.OrderSearchForm;
+import cloud.tianai.order.search.response.ScrollSearchResponse;
 
 import java.util.List;
 
@@ -20,5 +21,5 @@ public interface OrderScrollSearchService {
      * @param pageSize   分页数量
      * @return List<OrderMasterDO>
      */
-    List<OrderMasterDTO> scrollSearch(OrderSearchForm searchParam, String lastFlowNum, Integer pageSize);
+    ScrollSearchResponse<OrderMasterDTO> scrollSearch(OrderSearchForm searchParam, String lastFlowNum, Integer pageSize);
 }

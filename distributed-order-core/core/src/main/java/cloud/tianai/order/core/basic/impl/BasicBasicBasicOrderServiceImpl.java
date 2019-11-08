@@ -1,8 +1,8 @@
 package cloud.tianai.order.core.basic.impl;
 
 import cloud.tianai.order.core.api.basic.BasicOrderService;
-import cloud.tianai.order.core.api.basic.OrderSaveService;
-import cloud.tianai.order.core.api.basic.OrderStatusService;
+import cloud.tianai.order.core.api.basic.BasicOrderSaveService;
+import cloud.tianai.order.core.api.basic.BasicOrderStatusService;
 import cloud.tianai.order.core.api.basic.form.OrderSaveForm;
 import cloud.tianai.order.core.common.dataobject.OrderDetailDO;
 import cloud.tianai.order.core.common.dataobject.OrderMasterDO;
@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class BasicOrderServiceImpl extends AbstractBasicOrderService implements BasicOrderService, OrderSaveService, OrderStatusService {
+public class BasicBasicBasicOrderServiceImpl extends AbstractBasicBasicBasicOrderService implements BasicOrderService, BasicOrderSaveService, BasicOrderStatusService {
 
     private final OrderMasterMapper orderMasterMapper;
     private final OrderDetailMapper orderDetailMapper;

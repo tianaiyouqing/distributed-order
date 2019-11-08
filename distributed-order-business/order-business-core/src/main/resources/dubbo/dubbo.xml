@@ -21,6 +21,6 @@
     -->
     <dubbo:reference id="orderPayService" interface="cloud.tianai.order.core.api.pay.OrderPayService" loadbalance="roundrobin" timeout="5000"/>
     <!-- 优惠券接口 消费者 -->
-    <dubbo:reference id="orderStatusService" interface="cloud.tianai.order.core.api.basic.OrderStatusService" loadbalance="roundrobin" timeout="5000"/>
+    <dubbo:reference id="orderStatusService" interface="cloud.tianai.order.core.api.basic.BasicOrderStatusService" loadbalance="roundrobin" timeout="5000"/>
     <dubbo:reference id="basicOrderService" interface="cloud.tianai.order.core.api.basic.BasicOrderService" loadbalance="roundrobin" timeout="5000"/>
 </beans>

@@ -1,6 +1,6 @@
 package cloud.tianai.order.core.basic.impl;
 
-import cloud.tianai.order.core.api.basic.OrderStatusService;
+import cloud.tianai.order.core.api.basic.BasicOrderStatusService;
 import cloud.tianai.order.core.basic.event.PostOrderStatusUpdateEvent;
 import cloud.tianai.order.core.basic.event.PreOrderStatusUpdateEvent;
 import cloud.tianai.order.core.api.basic.enums.OrderStatusEnum;
@@ -18,7 +18,7 @@ import org.springframework.util.Assert;
  * @Description: 订单状态基础业务功能
  */
 @Slf4j
-public abstract class AbstractOrderStatusService extends AbstractOrderSaveService implements OrderStatusService {
+public abstract class AbstractBasicBasicOrderStatusService extends AbstractBasicOrderSaveService implements BasicOrderStatusService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)

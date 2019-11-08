@@ -10,7 +10,7 @@ import cloud.tianai.order.core.api.pay.OrderPayService;
 import cloud.tianai.order.core.common.dto.OrderCreateParamDTO;
 import cloud.tianai.order.core.common.dto.OrderCreateResult;
 import cloud.tianai.order.core.api.pay.exception.OrderCreateException;
-import cloud.tianai.order.core.api.basic.OrderSaveService;
+import cloud.tianai.order.core.api.basic.BasicOrderSaveService;
 import cloud.tianai.order.core.api.basic.form.OrderSaveForm;
 import cloud.tianai.order.core.api.basic.exception.OrderSaveException;
 import cloud.tianai.order.core.holder.OrderInterceptorChainHolder;
@@ -45,7 +45,7 @@ public class OrderPayServiceImpl implements OrderPayService {
     private final ProductInfoService productInfoService;
     private final ProductCouponService productCouponService;
     private final ProductStockService productStockService;
-    private final OrderSaveService orderSaveService;
+    private final BasicOrderSaveService basicOrderSaveService;
 
     @Override
     public ApiResponse<OrderCreateResult> createOrder(OrderCreateParamDTO paramDTO) {
@@ -123,7 +123,7 @@ public class OrderPayServiceImpl implements OrderPayService {
 
     protected OrderCreateResult doCreateOrder(OrderCreateParamDTO paramDTO) throws OrderSaveException {
         OrderSaveForm orderSaveForm = warpOrderSaveForm(paramDTO);
-        OrderWrapper orderWrapper = orderSaveService.insertOrder(orderSaveForm);
+        OrderWrapper orderWrapper = basicOrderSaveService.insertOrder(orderSaveForm);
         OrderCreateResult orderCreateResult = OrderDataConverter.orderWrapper2OrderCreateResult(orderWrapper);
         return orderCreateResult;
     }

@@ -8,7 +8,7 @@ import cloud.tianai.order.core.api.basic.exception.OrderStatusUpdateException;
  * @Date: 2019/10/25 12:24
  * @Description: 基础的订单状态业务
  */
-public interface OrderStatusService {
+public interface BasicOrderStatusService {
 
     /**
      * 更改订单状态

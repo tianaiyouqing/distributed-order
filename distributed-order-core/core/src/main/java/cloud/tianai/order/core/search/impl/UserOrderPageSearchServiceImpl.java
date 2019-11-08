@@ -1,6 +1,7 @@
 package cloud.tianai.order.core.search.impl;
 
 import cloud.tianai.order.common.dto.PageInfo;
+import cloud.tianai.order.core.api.basic.enums.OrderStatusEnum;
 import cloud.tianai.order.core.common.dataobject.OrderMasterDO;
 import cloud.tianai.order.common.dto.OrderMasterDTO;
 import cloud.tianai.order.core.api.basic.exception.UserOrderSearchException;
@@ -10,16 +11,19 @@ import cloud.tianai.order.core.util.OrderMergeUtils;
 import cloud.tianai.order.search.AbstractOrderPageSearchService;
 import cloud.tianai.order.search.exception.OrderSearchException;
 import cloud.tianai.order.search.form.OrderSearchForm;
+import cloud.tianai.order.search.response.ScrollSearchResponse;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sun.org.apache.regexp.internal.RE;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -78,13 +82,15 @@ public class UserOrderPageSearchServiceImpl extends AbstractOrderPageSearchServi
         LambdaQueryWrapper<OrderMasterDO> lambdaQueryWrapper = Wrappers.<OrderMasterDO>lambdaQuery();
         String uid = search.getUid();
         lambdaQueryWrapper.eq(OrderMasterDO::getUid, uid);
+        // 不查询已经被删除的订单
+        lambdaQueryWrapper.ne(OrderMasterDO :: getOrderStatus, OrderStatusEnum.REMOVE.getCode());
 
         String oid = search.getOid();
         String bid = search.getBid();
         String channelId = search.getChannelId();
         String platformId = search.getPlatformId();
         String externalOrderId = search.getExternalOrderId();
-        Integer orderStatus = search.getOrderStatus();
+        List<Integer> orderStatusList = search.getOrderStatusList();
         Integer afterSalesStatus = search.getAfterSalesStatus();
         Integer platformType = search.getPlatformType();
         String buyerName = search.getBuyerName();
@@ -107,8 +113,12 @@ public class UserOrderPageSearchServiceImpl extends AbstractOrderPageSearchServi
         if (StringUtils.isNotBlank(externalOrderId)) {
             lambdaQueryWrapper.eq(OrderMasterDO::getExternalOrderId, externalOrderId);
         }
-        if(Objects.nonNull(orderStatus)) {
-            lambdaQueryWrapper.eq(OrderMasterDO::getOrderStatus, orderStatus);
+        if(!CollectionUtils.isEmpty(orderStatusList)) {
+            if(orderStatusList.size() == 1) {
+                lambdaQueryWrapper.eq(OrderMasterDO::getOrderStatus, orderStatusList.get(0));
+            }else {
+                lambdaQueryWrapper.in(OrderMasterDO::getOrderStatus, orderStatusList);
+            }
         }
         if(Objects.nonNull(afterSalesStatus)) {
             lambdaQueryWrapper.eq(OrderMasterDO::getAfterSalesStatus, afterSalesStatus);
@@ -160,8 +170,16 @@ public class UserOrderPageSearchServiceImpl extends AbstractOrderPageSearchServi
     }
 
     @Override
-    protected List<OrderMasterDTO> doScrollSearch(OrderSearchForm search, String lastFlowNum, Integer pageSize) {
+    protected ScrollSearchResponse<OrderMasterDTO> doScrollSearch(OrderSearchForm search, String lastFlowNum, Integer pageSize) {
         List<OrderMasterDO> orderMasterDOList = orderMasterMapper.findForScroll(search, lastFlowNum, pageSize);
-        return converter(orderMasterDOList);
+        List<OrderMasterDTO> orderMasterDTOList = converter(orderMasterDOList);
+        ScrollSearchResponse<OrderMasterDTO> response = new ScrollSearchResponse<>();
+        response.setData(orderMasterDTOList);
+        response.setSearchForm(search);
+        if(!CollectionUtils.isEmpty(orderMasterDTOList)) {
+            String newLastFlowNum = orderMasterDTOList.get(orderMasterDTOList.size() - 1).getOid();
+            response.setLastFlowNum(newLastFlowNum);
+        }
+        return response;
     }
 }
