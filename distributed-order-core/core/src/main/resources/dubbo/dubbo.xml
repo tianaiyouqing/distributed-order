@@ -17,6 +17,6 @@
     <!-- 暴露的接口 -->
     <!-- 订单相关接口 生产者 -->
     <dubbo:service interface="cloud.tianai.order.core.api.pay.OrderPayService" ref="orderPayServiceImpl" timeout="20000"  />
-    <dubbo:service interface="cloud.tianai.order.core.api.basic.BasicOrderStatusService" ref="basicOrderServiceImpl" timeout="20000" />
-    <dubbo:service interface="cloud.tianai.order.core.api.basic.BasicOrderService" ref="basicOrderServiceImpl" timeout="20000" />
+    <dubbo:service interface="cloud.tianai.order.core.basic.BasicOrderService" ref="basicOrderServiceImpl" timeout="20000" />
+    <dubbo:service interface="cloud.tianai.order.core.api.basic.BasicOrderSearchService" ref="basicOrderServiceImpl" timeout="20000" />
 </beans>

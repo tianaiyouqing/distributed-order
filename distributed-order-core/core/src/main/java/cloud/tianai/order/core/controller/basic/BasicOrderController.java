@@ -2,7 +2,7 @@ package cloud.tianai.order.core.controller.basic;
 
 import cloud.tianai.order.common.response.ApiResponse;
 import cloud.tianai.order.common.response.ApiResponseStatusEnum;
-import cloud.tianai.order.core.api.basic.BasicOrderService;
+import cloud.tianai.order.core.basic.BasicOrderService;
 import cloud.tianai.order.core.common.wrapper.BasicOrderWrapper;
 import cloud.tianai.order.core.common.wrapper.OrderWrapper;
 import org.springframework.beans.factory.annotation.Autowired;

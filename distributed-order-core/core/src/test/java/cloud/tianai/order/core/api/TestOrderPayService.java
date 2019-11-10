@@ -4,10 +4,11 @@ import cloud.tianai.order.common.response.ApiResponse;
 import cloud.tianai.order.common.util.id.IdUtils;
 import cloud.tianai.order.core.OrderCoreApplicationTests;
 import cloud.tianai.order.core.api.pay.OrderPayService;
-import cloud.tianai.order.core.common.dto.OrderCreateParamDTO;
-import cloud.tianai.order.core.common.dto.OrderCreateResult;
-import cloud.tianai.order.core.common.dto.SimpleOrderProductDTO;
-import cloud.tianai.order.core.api.basic.enums.OrderTypeEnum;
+import cloud.tianai.order.core.api.pay.dto.OrderCreateParam;
+import cloud.tianai.order.core.api.pay.dto.OrderCreateResult;
+import cloud.tianai.order.core.api.pay.dto.SimpleOrderProductDTO;
+import cloud.tianai.order.core.common.enums.OrderTypeEnum;
+import cloud.tianai.order.core.common.info.OrderAddressInfo;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StopWatch;
@@ -25,7 +26,7 @@ public class TestOrderPayService extends OrderCoreApplicationTests {
     public void createOrder() throws InterruptedException {
 
         String uid = IdUtils.getNoRepetitionIdStr();
-        OrderCreateParamDTO param = new OrderCreateParamDTO();
+        OrderCreateParam param = new OrderCreateParam();
         param.setUid(uid);
         Collection<SimpleOrderProductDTO> productDTOS = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
@@ -36,20 +37,21 @@ public class TestOrderPayService extends OrderCoreApplicationTests {
             productDTOS.add(s1);
         }
         param.setProductDTOS(productDTOS);
-        param.setCouponId(IdUtils.getNoRepetitionIdStr());
+        param.setPromotionId(IdUtils.getNoRepetitionIdStr());
         param.setPayRemark("这是买家留言");
         param.setPlatformType(1);
         param.setChannelId("qd:0001");
         param.setPlatformId("pt:0001");
         param.setOrderType(OrderTypeEnum.CASH_ON_DELIVERY.getCode());
-        param.setBuyerName("zhangsan");
-        param.setBuyerPhone("133333333333");
-        param.setProvince("山西");
-        param.setCity("太原市");
-        param.setArea("小店区");
-        param.setStreet("八一街");
-        param.setAddressDesc("xxx小区");
-
+        OrderAddressInfo addressInfo = new OrderAddressInfo();
+        addressInfo.setProvince("山西");
+        addressInfo.setCity("太原市");
+        addressInfo.setArea("小店区");
+        addressInfo.setStreet("八一街");
+        addressInfo.setAddressDesc("xxx小区");
+        addressInfo.setBuyerName("zhangsan");
+        addressInfo.setBuyerPhone("13333333333");
+        param.setAddress(addressInfo);
         ApiResponse<OrderCreateResult> response =
                 orderPayService.createOrder(param);
         if(response.isSuccess()) {

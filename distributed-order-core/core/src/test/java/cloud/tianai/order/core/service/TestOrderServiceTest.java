@@ -30,7 +30,7 @@ public class TestOrderServiceTest extends OrderCoreApplicationTests {
         master.setPlatformType(3);
 
         master.setOrderAmount(666L);
-        master.setCouponPrice(6L);
+        master.setDiscountFee(6L);
         master.setBuyerName("hi 且");
         master.setBuyerPhone("13333333333");
         master.setPayRemark("哈哈");

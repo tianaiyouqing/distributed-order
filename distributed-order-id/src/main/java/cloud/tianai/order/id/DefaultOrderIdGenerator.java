@@ -179,4 +179,10 @@ public class DefaultOrderIdGenerator implements OrderIdGenerator, ShardingIdHold
         String bidSplit = bid.substring(bid.length() - BID_SPLIT_BIT);
         return bidSplit;
     }
+
+    public static void main(String[] args) {
+        DefaultOrderIdGenerator defaultOrderIdGenerator = new DefaultOrderIdGenerator();
+        String id = defaultOrderIdGenerator.getUserShardingIdForOrderId("1119315098940267725074010");
+        System.out.println(id);
+    }
 }

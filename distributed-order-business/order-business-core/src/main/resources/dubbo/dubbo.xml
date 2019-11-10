@@ -7,9 +7,13 @@
     http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
     <!-- 提供方应用信息，用于计算依赖关系 -->
-    <dubbo:application name="${spring.application.name}" logger="slf4j"/>
+    <dubbo:application name="${spring.application.name}" logger="slf4j">
+        <dubbo:parameter key="qos.enable" value="true"/>
+        <dubbo:parameter key="qos.accept.foreign.io" value="false"/>
+        <dubbo:parameter key="qos.port" value="33333"/>
+    </dubbo:application>
     <!-- 注册中心暴露服务地址 -->
-    <dubbo:registry address="${dubbo.registry.address}" />
+    <dubbo:registry address="${dubbo.registry.address}"/>
     <!-- 暴露服务 -->
     <!-- 配置 dispatcher="message" threads="500" -->
     <dubbo:protocol name="${dubbo.protocol.name}" port="${dubbo.protocol.port}" dispatcher="message" threads="500"/>
@@ -19,8 +23,15 @@
     <!--
         loadbalance算法 : RoundRobinLoadBalance
     -->
-    <dubbo:reference id="orderPayService" interface="cloud.tianai.order.core.api.pay.OrderPayService" loadbalance="roundrobin" timeout="5000"/>
+    <dubbo:reference id="orderPayService"
+                     interface="cloud.tianai.order.core.api.pay.OrderPayService"
+                     loadbalance="roundrobin"
+                     timeout="5000"
+                     check="false"/>
     <!-- 优惠券接口 消费者 -->
-    <dubbo:reference id="orderStatusService" interface="cloud.tianai.order.core.api.basic.BasicOrderStatusService" loadbalance="roundrobin" timeout="5000"/>
-    <dubbo:reference id="basicOrderService" interface="cloud.tianai.order.core.api.basic.BasicOrderService" loadbalance="roundrobin" timeout="5000"/>
+    <dubbo:reference id="basicOrderSearchService"
+                     interface="cloud.tianai.order.core.api.basic.BasicOrderSearchService"
+                     loadbalance="roundrobin"
+                     timeout="5000"
+                     check="false"/>
 </beans>

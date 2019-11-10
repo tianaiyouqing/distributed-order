@@ -1,16 +1,17 @@
 package cloud.tianai.order.core.warpper.impl;
 
-import cloud.tianai.order.core.api.basic.form.OrderSaveForm;
+import cloud.tianai.order.core.basic.form.OrderSaveForm;
 import cloud.tianai.order.core.common.dataobject.OrderDetailDO;
 import cloud.tianai.order.core.common.dataobject.OrderMasterDO;
-import cloud.tianai.order.core.api.basic.enums.AfterSalesStatusEnum;
-import cloud.tianai.order.core.api.basic.enums.OrderStatusEnum;
-import cloud.tianai.order.core.api.basic.enums.OrderTypeEnum;
-import cloud.tianai.order.core.api.basic.information.AddressInfo;
-import cloud.tianai.order.core.api.basic.information.BasicBusinessInfo;
-import cloud.tianai.order.core.api.basic.information.BasicUserInfo;
-import cloud.tianai.order.core.api.basic.information.ProductInfo;
+import cloud.tianai.order.core.common.enums.AfterSalesStatusEnum;
+import cloud.tianai.order.core.common.enums.OrderStatusEnum;
+import cloud.tianai.order.core.common.enums.OrderTypeEnum;
+import cloud.tianai.order.core.common.info.OrderAddressInfo;
 import cloud.tianai.order.core.common.wrapper.OrderWrapper;
+import cloud.tianai.order.core.sdk.dto.BasicBusinessInfoDTO;
+import cloud.tianai.order.core.sdk.dto.BasicUserInfoDTO;
+import cloud.tianai.order.core.sdk.dto.ProductDTO;
+import cloud.tianai.order.core.sdk.dto.PromotionInfoDTO;
 import cloud.tianai.order.id.OrderIdGenerator;
 
 import java.util.ArrayList;
@@ -40,13 +41,13 @@ public class DataGeneratorOrderWrapper implements OrderWrapper {
 
     private void warp() {
         // 生成订单号
-        BasicUserInfo userInfo = orderSaveForm.getUserInfo();
-        BasicBusinessInfo businessInfo = orderSaveForm.getBusinessInfo();
-        AddressInfo addressInfo = orderSaveForm.getAddressInfo();
-        Collection<ProductInfo> productInfos = orderSaveForm.getProductInfos();
+        BasicUserInfoDTO userInfo = orderSaveForm.getUserInfo();
+        BasicBusinessInfoDTO businessInfo = orderSaveForm.getBusinessInfo();
+        OrderAddressInfo orderAddressInfo = orderSaveForm.getOrderAddressInfo();
+        Collection<ProductDTO> productDTOS = orderSaveForm.getProductDTOS();
         String oid = orderIdGenerator.generatorOrderId(userInfo.getUid(), businessInfo.getBid());
         orderMasterDO = new OrderMasterDO();
-        orderDetailDOS = new ArrayList<>(productInfos.size());
+        orderDetailDOS = new ArrayList<>(productDTOS.size());
 
         // 订单ID
         orderMasterDO.setOid(oid);
@@ -66,40 +67,60 @@ public class DataGeneratorOrderWrapper implements OrderWrapper {
         orderMasterDO.setAfterSalesStatus(AfterSalesStatusEnum.DEFAULT.getCode());
         // 平台类型
         orderMasterDO.setPlatformType(orderSaveForm.getPlatformType());
-        // 优惠券ID
-        orderMasterDO.setCouponId(orderSaveForm.getCouponId());
-        // 自定义优惠价格
-        Long customCouponPrice = orderSaveForm.getCustomCouponPrice();
-        orderMasterDO.setCustomCouponPrice(customCouponPrice);
+        // 优惠信息
+        PromotionInfoDTO promotionInfoDTO = orderSaveForm.getPromotionInfoDTO();
+        if(Objects.nonNull(promotionInfoDTO)) {
+            // 优惠券ID
+            orderMasterDO.setPromotionId(promotionInfoDTO.getPromotionId());
+            // 优惠价格
+            Long discountFee = promotionInfoDTO.getDiscountFee();
+            if(discountFee == null || discountFee < 0) {
+                discountFee = 0L;
+            }
+            // 设置优惠价格
+            orderMasterDO.setDiscountFee(discountFee);
+            // 设置优惠信息的名称
+            orderMasterDO.setPromotionName(promotionInfoDTO.getPromotionName());
+        }else {
+            // 设置优惠价格
+            orderMasterDO.setDiscountFee(0L);
+        }
+        Long customDiscountFee = orderSaveForm.getCustomDiscountFee();
+
+        if( customDiscountFee != null && customDiscountFee > 0 ) {
+            orderMasterDO.setCustomDiscountFee(customDiscountFee);
+            // 优惠价格再加上自定义优惠价格
+            orderMasterDO.setDiscountFee(orderMasterDO.getDiscountFee() + customDiscountFee);
+        }
+        // 总优惠价格
+        Long discountFee = orderMasterDO.getDiscountFee();
 
         Long orderAmount = 0L;
         String prevOrderDetailId = null;
-        for (ProductInfo productInfo : productInfos) {
+        for (ProductDTO productDTO : productDTOS) {
             // 生成订单详情ID
             String orderDetailId = orderIdGenerator.generatorOrderDetailId(prevOrderDetailId, oid);
             OrderDetailDO orderDetailDO = new OrderDetailDO();
             orderDetailDO.setOrderDetailId(orderDetailId);
             orderDetailDO.setOid(oid);
-            orderDetailDO.setSpuId(productInfo.getSpuId());
-            orderDetailDO.setSkuId(productInfo.getSkuId());
-            orderDetailDO.setSku(productInfo.getSku());
-            orderDetailDO.setSkuDesc(productInfo.getSkuDesc());
-            orderDetailDO.setProductName(productInfo.getProductName());
-            orderDetailDO.setProductPrice(productInfo.getProductPrice());
-            orderDetailDO.setProductQuantity(productInfo.getProductQuantity());
-            orderDetailDO.setProductIcon(productInfo.getProductIcon());
-            orderDetailDO.setProductBarcode(productInfo.getProductBarcode());
+            orderDetailDO.setSpuId(productDTO.getSpuId());
+            orderDetailDO.setSkuId(productDTO.getSkuId());
+            orderDetailDO.setSku(productDTO.getSku());
+            orderDetailDO.setSkuDesc(productDTO.getSkuDesc());
+            orderDetailDO.setProductName(productDTO.getProductName());
+            orderDetailDO.setProductPrice(productDTO.getProductPrice());
+            orderDetailDO.setProductQuantity(productDTO.getProductQuantity());
+            orderDetailDO.setProductIcon(productDTO.getProductIcon());
+            orderDetailDO.setProductBarcode(productDTO.getProductBarcode());
             // 记录总价格
             orderAmount += orderDetailDO.getProductPrice() * orderDetailDO.getProductQuantity();
             orderDetailDOS.add(orderDetailDO);
             prevOrderDetailId = orderDetailId;
         }
         // 总价减去优惠价格
-        if(Objects.nonNull(orderSaveForm.getCouponPrice()) && orderSaveForm.getCouponPrice() > 0) {
-            orderAmount -= orderSaveForm.getCouponPrice();
-            if(orderAmount < 0L) {
-                orderAmount = 0L;
-            }
+        orderAmount -= discountFee;
+        if(orderAmount < 0L) {
+            orderAmount = 0L;
         }
         // 订单类型
         Integer orderType = orderSaveForm.getOrderType();
@@ -109,20 +130,22 @@ public class DataGeneratorOrderWrapper implements OrderWrapper {
         orderMasterDO.setOrderType(orderType);
         // 订单总价
         orderMasterDO.setOrderAmount(orderAmount);
-        // 优惠价格
-        orderMasterDO.setCouponPrice(orderSaveForm.getCouponPrice());
         // 买家留言
         orderMasterDO.setPayRemark(orderSaveForm.getPayRemark());
         // 买家名称
-        orderMasterDO.setBuyerName(addressInfo.getBuyerName());
+        orderMasterDO.setBuyerName(orderAddressInfo.getBuyerName());
         // 买家手机
-        orderMasterDO.setBuyerPhone(addressInfo.getBuyerPhone());
+        orderMasterDO.setBuyerPhone(orderAddressInfo.getBuyerPhone());
         // 地址相关
-        orderMasterDO.setProvince(addressInfo.getProvince());
-        orderMasterDO.setCity(addressInfo.getCity());
-        orderMasterDO.setArea(addressInfo.getArea());
-        orderMasterDO.setStreet(addressInfo.getStreet());
-        orderMasterDO.setAddressDesc(addressInfo.getAddressDesc());
+        orderMasterDO.setProvince(orderAddressInfo.getProvince());
+        orderMasterDO.setCity(orderAddressInfo.getCity());
+        orderMasterDO.setArea(orderAddressInfo.getArea());
+        orderMasterDO.setStreet(orderAddressInfo.getStreet());
+        orderMasterDO.setAddressDesc(orderAddressInfo.getAddressDesc());
+        // 下单时间
+        if(orderSaveForm.getOrderCreateTime() != null) {
+            orderMasterDO.setCreateTime(orderSaveForm.getOrderCreateTime());
+        }
     }
 
     @Override

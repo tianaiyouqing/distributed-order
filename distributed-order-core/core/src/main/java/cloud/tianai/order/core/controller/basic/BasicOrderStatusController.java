@@ -2,9 +2,9 @@ package cloud.tianai.order.core.controller.basic;
 
 import cloud.tianai.order.common.response.ApiResponse;
 import cloud.tianai.order.common.util.enums.EnumUtils;
-import cloud.tianai.order.core.api.basic.BasicOrderStatusService;
-import cloud.tianai.order.core.api.basic.enums.OrderStatusEnum;
-import cloud.tianai.order.core.api.basic.exception.OrderStatusUpdateException;
+import cloud.tianai.order.core.basic.BasicOrderStatusService;
+import cloud.tianai.order.core.common.enums.OrderStatusEnum;
+import cloud.tianai.order.core.basic.exception.OrderStatusUpdateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;

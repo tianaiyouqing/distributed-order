@@ -1,10 +1,10 @@
 package cloud.tianai.order.core.util;
 
-import cloud.tianai.order.core.api.basic.form.OrderSaveForm;
-import cloud.tianai.order.core.api.basic.information.AddressInfo;
-import cloud.tianai.order.core.api.basic.information.BasicBusinessInfo;
-import cloud.tianai.order.core.api.basic.information.BasicUserInfo;
-import cloud.tianai.order.core.api.basic.information.ProductInfo;
+import cloud.tianai.order.core.basic.form.OrderSaveForm;
+import cloud.tianai.order.core.common.info.OrderAddressInfo;
+import cloud.tianai.order.core.sdk.dto.BasicBusinessInfoDTO;
+import cloud.tianai.order.core.sdk.dto.BasicUserInfoDTO;
+import cloud.tianai.order.core.sdk.dto.ProductDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 import cloud.tianai.order.common.response.ApiResponse;
@@ -27,17 +27,17 @@ public class OrderCheckUtils {
         if(Objects.isNull(orderSaveForm)) {
             return ApiResponse.ofCheckError("orderSaveForm为空");
         }
-        BasicUserInfo userInfo = orderSaveForm.getUserInfo();
-        AddressInfo addressInfo = orderSaveForm.getAddressInfo();
-        BasicBusinessInfo businessInfo = orderSaveForm.getBusinessInfo();
-        Collection<ProductInfo> productInfos = orderSaveForm.getProductInfos();
+        BasicUserInfoDTO userInfo = orderSaveForm.getUserInfo();
+        OrderAddressInfo orderAddressInfo = orderSaveForm.getOrderAddressInfo();
+        BasicBusinessInfoDTO businessInfo = orderSaveForm.getBusinessInfo();
+        Collection<ProductDTO> productDTOS = orderSaveForm.getProductDTOS();
 
         ApiResponse<?> userInfoCheckResult = checkUserInfo(userInfo);
         if(!ApiResponseStatusEnum.SUCCESS.getCode().equals(userInfoCheckResult.getCode())) {
             return userInfoCheckResult;
         }
 
-        ApiResponse<?> addressInfoCheckResult = checkAddressInfo(addressInfo);
+        ApiResponse<?> addressInfoCheckResult = checkAddressInfo(orderAddressInfo);
         if(!ApiResponseStatusEnum.SUCCESS.getCode().equals(addressInfoCheckResult.getCode())) {
             return addressInfoCheckResult;
         }
@@ -46,7 +46,7 @@ public class OrderCheckUtils {
         if(!ApiResponseStatusEnum.SUCCESS.getCode().equals(businessInfoCheckResult.getCode())) {
             return businessInfoCheckResult;
         }
-        ApiResponse<?> productInfosCheckResult = checkProductInfos(productInfos);
+        ApiResponse<?> productInfosCheckResult = checkProductInfos(productDTOS);
         if(!ApiResponseStatusEnum.SUCCESS.getCode().equals(productInfosCheckResult.getCode())) {
             return productInfosCheckResult;
         }
@@ -54,22 +54,22 @@ public class OrderCheckUtils {
         return ApiResponse.ofSuccess("success");
     }
 
-    private static ApiResponse<?> checkProductInfos(Collection<ProductInfo> productInfos) {
-        if(CollectionUtils.isEmpty(productInfos)) {
+    private static ApiResponse<?> checkProductInfos(Collection<ProductDTO> productDTOS) {
+        if(CollectionUtils.isEmpty(productDTOS)) {
             return ApiResponse.ofCheckError("商品信息不能为空");
         }
-        for (ProductInfo productInfo : productInfos) {
-            if(Objects.isNull(productInfo)) {
+        for (ProductDTO productDTO : productDTOS) {
+            if(Objects.isNull(productDTO)) {
                 return ApiResponse.ofCheckError("商品信息列表中有数据为空");
             }
-            String spuId = productInfo.getSpuId();
-            String bid = productInfo.getBid();
-            String productName = productInfo.getProductName();
-            Long productPrice = productInfo.getProductPrice();
-            Integer productQuantity = productInfo.getProductQuantity();
-            String productIcon = productInfo.getProductIcon();
-            String sku = productInfo.getSku();
-            String skuId = productInfo.getSkuId();
+            String spuId = productDTO.getSpuId();
+            String bid = productDTO.getBid();
+            String productName = productDTO.getProductName();
+            Long productPrice = productDTO.getProductPrice();
+            Integer productQuantity = productDTO.getProductQuantity();
+            String productIcon = productDTO.getProductIcon();
+            String sku = productDTO.getSku();
+            String skuId = productDTO.getSkuId();
             if(StringUtils.isBlank(spuId)) {
                 return ApiResponse.ofCheckError("商品ID不能为空");
             }
@@ -95,7 +95,7 @@ public class OrderCheckUtils {
         return ApiResponse.ofSuccess("success");
     }
 
-    private static ApiResponse<?> checkBusinessInfo(BasicBusinessInfo businessInfo) {
+    private static ApiResponse<?> checkBusinessInfo(BasicBusinessInfoDTO businessInfo) {
         if(Objects.isNull(businessInfo)) {
             return ApiResponse.ofCheckError("商户信息为空");
         }
@@ -106,14 +106,23 @@ public class OrderCheckUtils {
         return ApiResponse.ofSuccess("success");
     }
 
-    public static ApiResponse<?> checkAddressInfo(AddressInfo addressInfo) {
-        if(Objects.isNull(addressInfo)) {
+    public static ApiResponse<?> checkAddressInfo(OrderAddressInfo orderAddressInfo) {
+        if(Objects.isNull(orderAddressInfo)) {
             return ApiResponse.ofCheckError("地址信息为空");
         }
 
-        String province = addressInfo.getProvince();
-        String city = addressInfo.getCity();
-        String area = addressInfo.getArea();
+        String province = orderAddressInfo.getProvince();
+        String city = orderAddressInfo.getCity();
+        String area = orderAddressInfo.getArea();
+        String buyerName = orderAddressInfo.getBuyerName();
+        String buyerPhone = orderAddressInfo.getBuyerPhone();
+
+        if(StringUtils.isBlank(buyerName)) {
+            return ApiResponse.ofCheckError("买家名称为空");
+        }
+        if(StringUtils.isBlank(buyerPhone)) {
+            return ApiResponse.ofCheckError("买家手机为空");
+        }
         if(StringUtils.isBlank(province)) {
             return ApiResponse.ofCheckError("地址信息中 省不能为空");
         }
@@ -127,7 +136,7 @@ public class OrderCheckUtils {
 
     }
 
-    public static ApiResponse<?> checkUserInfo(BasicUserInfo userInfo) {
+    public static ApiResponse<?> checkUserInfo(BasicUserInfoDTO userInfo) {
         if(Objects.isNull(userInfo)) {
             return ApiResponse.ofCheckError("用户信息不能为空");
         }

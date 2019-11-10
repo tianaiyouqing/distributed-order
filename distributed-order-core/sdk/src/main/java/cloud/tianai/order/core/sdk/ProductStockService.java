@@ -2,7 +2,7 @@ package cloud.tianai.order.core.sdk;
 
 
 import cloud.tianai.order.common.response.ApiResponse;
-import cloud.tianai.order.core.common.dto.SimpleOrderProductDTO;
+import cloud.tianai.order.core.sdk.dto.ProductReduceStockDTO;
 
 import java.util.Collection;
 
@@ -19,7 +19,7 @@ public interface ProductStockService {
      * @param productDTOS
      * @return 如果成功，返回stockID
      */
-    ApiResponse<String> stock(Collection<SimpleOrderProductDTO> productDTOS);
+    ApiResponse<String> reduceStock(Collection<ProductReduceStockDTO> productDTOS);
 
     /**
      * 通过stockID 确认库存

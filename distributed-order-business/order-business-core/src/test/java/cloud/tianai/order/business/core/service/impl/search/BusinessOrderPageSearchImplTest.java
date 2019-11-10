@@ -4,6 +4,7 @@ import cloud.tianai.order.business.core.OrderBusinessApplicationTests;
 import cloud.tianai.order.common.dto.OrderMasterDTO;
 import cloud.tianai.order.common.util.gson.GsonUtils;
 import cloud.tianai.order.search.form.OrderSearchForm;
+import cloud.tianai.order.search.response.ScrollSearchResponse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -33,7 +34,8 @@ public class BusinessOrderPageSearchImplTest extends OrderBusinessApplicationTes
         String lastFlowNum  = null;
         StopWatch s2 = new StopWatch();
         s2.start();
-        List<OrderMasterDTO> result = businessOrderPageSearch.scrollSearch(search, lastFlowNum, 1000);
+        ScrollSearchResponse<OrderMasterDTO> resultScroll = businessOrderPageSearch.scrollSearch(search, lastFlowNum, 1000);
+        List<OrderMasterDTO> result = resultScroll.getData();
         s2.stop();
 
         while (!CollectionUtils.isEmpty(result)) {
@@ -45,7 +47,7 @@ public class BusinessOrderPageSearchImplTest extends OrderBusinessApplicationTes
             lastFlowNum = result.get(result.size() - 1).getOid();
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
-            result = businessOrderPageSearch.scrollSearch(search, lastFlowNum, 1000);
+            result = businessOrderPageSearch.scrollSearch(search, lastFlowNum, 1000).getData();
             stopWatch.stop();
             System.out.println("当前查询耗时:" + stopWatch.getTotalTimeMillis() +"ms");
         }

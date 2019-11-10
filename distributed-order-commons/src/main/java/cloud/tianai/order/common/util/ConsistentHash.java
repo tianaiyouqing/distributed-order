@@ -121,12 +121,8 @@ public class ConsistentHash {
 
     public static void main(String[] args) {
         ConsistentHash consistentHash = new ConsistentHash(Arrays.asList("_0", "_1", "_2", "_3", "_4", "_5", "_6", "_7"));
-        for (int i = 0; i < 100; i++) {
-            int random = new Random().nextInt(99);
-            String server = consistentHash.getTableForMod(String.format("%02d",random));
-            System.out.println(server);
-
-        }
+        System.out.println(consistentHash.getTableForMod("74"));
+        System.out.println(consistentHash.getDatabaseForMod("74"));
 
     }
 }

@@ -28,8 +28,6 @@ public class OrderMasterDO implements Serializable {
     private String platformId;
     /** 第三方订单ID. */
     private String externalOrderId;
-    /** 优惠券ID. */
-    private String couponId;
 
     /** 订单状态. */
     private Integer orderStatus;
@@ -41,10 +39,18 @@ public class OrderMasterDO implements Serializable {
     private Integer orderType;
     /** 订单总价. */
     private Long orderAmount;
-    /** 优惠价格. */
-    private Long couponPrice;
-    /** 自定义优惠价格. */
-    private Long customCouponPrice;
+
+    // =========== 优惠相关信息 ============
+
+    /** 优惠ID. */
+    private String promotionId;
+    /** 优惠信息的名称. */
+    private String promotionName;
+    /** 优惠价格 = 优惠中心的优惠价格 + 自定义优惠价格. */
+    private Long discountFee;
+    /** 设置自定义优惠价格. */
+    private Long customDiscountFee;
+
     /** 买家名称. */
     private String buyerName;
     /** 买家手机号. */

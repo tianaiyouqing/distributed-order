@@ -5,6 +5,7 @@ import cloud.tianai.order.common.util.gson.GsonUtils;
 import cloud.tianai.order.core.OrderCoreApplicationTests;
 import cloud.tianai.order.core.mapper.OrderMasterMapper;
 import cloud.tianai.order.search.form.OrderSearchForm;
+import cloud.tianai.order.search.response.ScrollSearchResponse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,8 +17,6 @@ public class UserOrderPageSearchServiceImplTest extends OrderCoreApplicationTest
 
     @Autowired
     private UserOrderPageSearchServiceImpl userOrderPageSearchService;
-    @Autowired
-    private OrderMasterMapper orderMasterMapper;
 
 
     @Test
@@ -36,12 +35,12 @@ public class UserOrderPageSearchServiceImplTest extends OrderCoreApplicationTest
         System.out.println(GsonUtils.gsonString(lastFlowNums));
 
         List<OrderMasterDTO> resultData =  new ArrayList<>(255);
-        List<OrderMasterDTO> result = userOrderPageSearchService.scrollSearch(search, lastFlowNum, pageSize);
-        resultData.addAll(result);
+        ScrollSearchResponse<OrderMasterDTO> result = userOrderPageSearchService.scrollSearch(search, lastFlowNum, pageSize);
+        resultData.addAll(result.getData());
         for (String flowNum : lastFlowNums) {
             lastFlowNum = flowNum;
             result = userOrderPageSearchService.scrollSearch(search, lastFlowNum, pageSize);
-            resultData.addAll(result);
+            resultData.addAll(result.getData());
         }
 
         for (int i = 0; i < resultData.size(); i++) {

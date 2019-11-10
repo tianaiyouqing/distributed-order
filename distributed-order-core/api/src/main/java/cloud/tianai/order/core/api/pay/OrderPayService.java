@@ -2,8 +2,8 @@ package cloud.tianai.order.core.api.pay;
 
 
 import cloud.tianai.order.common.response.ApiResponse;
-import cloud.tianai.order.core.common.dto.OrderCreateParamDTO;
-import cloud.tianai.order.core.common.dto.OrderCreateResult;
+import cloud.tianai.order.core.api.pay.dto.OrderCreateParam;
+import cloud.tianai.order.core.api.pay.dto.OrderCreateResult;
 
 /**
  * @Author: 天爱有情
@@ -17,6 +17,6 @@ public interface OrderPayService {
      * @param paramDTO 创建订单所需参数
      * @return ApiResponse<List<OrderCreateResult>>
      */
-    ApiResponse<OrderCreateResult> createOrder(OrderCreateParamDTO paramDTO);
+    ApiResponse<OrderCreateResult> createOrder(OrderCreateParam paramDTO);
 
 }

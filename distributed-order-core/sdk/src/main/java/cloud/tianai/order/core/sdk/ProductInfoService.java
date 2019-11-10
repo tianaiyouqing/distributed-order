@@ -1,6 +1,6 @@
 package cloud.tianai.order.core.sdk;
 
-import cloud.tianai.order.core.common.dto.ProductSkuInfoDTO;
+import cloud.tianai.order.core.sdk.dto.ProductSkuInfoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,7 +1,7 @@
 package cloud.tianai.order.core.api;
 
 import cloud.tianai.order.common.util.gson.GsonUtils;
-import cloud.tianai.order.core.common.dto.ProductSkuInfoDTO;
+import cloud.tianai.order.core.sdk.dto.ProductSkuInfoDTO;
 import cloud.tianai.order.core.sdk.ProductInfoService;
 
 import java.util.ArrayList;

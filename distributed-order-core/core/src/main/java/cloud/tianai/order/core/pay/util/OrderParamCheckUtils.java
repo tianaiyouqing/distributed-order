@@ -1,7 +1,8 @@
 package cloud.tianai.order.core.pay.util;
 
-import cloud.tianai.order.core.common.dto.OrderCreateParamDTO;
-import cloud.tianai.order.core.common.dto.SimpleOrderProductDTO;
+import cloud.tianai.order.core.api.pay.dto.OrderCreateParam;
+import cloud.tianai.order.core.api.pay.dto.SimpleOrderProductDTO;
+import cloud.tianai.order.core.util.OrderCheckUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -13,37 +14,18 @@ import java.util.Objects;
 public class OrderParamCheckUtils {
 
 
-    public static ApiResponse checkNecessaryParam(OrderCreateParamDTO paramDTO) {
+    public static ApiResponse checkNecessaryParam(OrderCreateParam paramDTO) {
         String uid = paramDTO.getUid();
         Collection<SimpleOrderProductDTO> productDTOS = paramDTO.getProductDTOS();
-        String buyerName = paramDTO.getBuyerName();
-        String buyerPhone = paramDTO.getBuyerPhone();
-        String province = paramDTO.getProvince();
-        String city = paramDTO.getCity();
-        String area = paramDTO.getArea();
-        String street = paramDTO.getStreet();
-
+        ApiResponse<?> addressCheckResult = OrderCheckUtils.checkAddressInfo(paramDTO.getAddress());
+        if(!addressCheckResult.isSuccess()) {
+            return addressCheckResult;
+        }
         if(StringUtils.isBlank(uid)) {
             return ApiResponse.ofCheckError("用户ID为空");
         }
-        if(StringUtils.isBlank(buyerName)) {
-            return ApiResponse.ofCheckError("买家名称为空");
-        }
-        if(StringUtils.isBlank(buyerPhone)) {
-            return ApiResponse.ofCheckError("买家手机为空");
-        }
-        if(StringUtils.isBlank(province)) {
-            return ApiResponse.ofCheckError("省为空");
-        }
-        if(StringUtils.isBlank(city)) {
-            return ApiResponse.ofCheckError("市为空");
-        }
-        if(StringUtils.isBlank(area)) {
-            return ApiResponse.ofCheckError("区为空");
-        }
-        if(StringUtils.isBlank(street)) {
-            return ApiResponse.ofCheckError("街道为空");
-        }
+
+
         if(CollectionUtils.isEmpty(productDTOS)) {
             return ApiResponse.ofCheckError("商品信息为空");
         }

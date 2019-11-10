@@ -2,12 +2,11 @@ package cloud.tianai.order.core.basic;
 
 import cloud.tianai.order.common.util.id.IdUtils;
 import cloud.tianai.order.core.OrderCoreApplicationTests;
-import cloud.tianai.order.core.api.basic.BasicOrderSaveService;
-import cloud.tianai.order.core.api.basic.form.OrderSaveForm;
-import cloud.tianai.order.core.api.basic.information.AddressInfo;
-import cloud.tianai.order.core.api.basic.information.BasicBusinessInfo;
-import cloud.tianai.order.core.api.basic.information.BasicUserInfo;
-import cloud.tianai.order.core.api.basic.information.ProductInfo;
+import cloud.tianai.order.core.basic.form.OrderSaveForm;
+import cloud.tianai.order.core.common.info.OrderAddressInfo;
+import cloud.tianai.order.core.sdk.dto.BasicBusinessInfoDTO;
+import cloud.tianai.order.core.sdk.dto.BasicUserInfoDTO;
+import cloud.tianai.order.core.sdk.dto.ProductDTO;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.LinkedMultiValueMap;
@@ -36,13 +35,13 @@ public class BasicOrderSaveServiceTest extends OrderCoreApplicationTests {
 
             OrderSaveForm orderSaveForm= new OrderSaveForm();
             orderSaveForm.setPayRemark("买家留言了");
-            orderSaveForm.setCouponPrice(500L);
+            orderSaveForm.setCustomDiscountFee(500L);
             orderSaveForm.setChannelId("android_001");
 
-            BasicUserInfo basicUserInfo = new BasicUserInfo().setUid(uid);
+            BasicUserInfoDTO basicUserInfoDTO = new BasicUserInfoDTO().setUid(uid);
 
-            orderSaveForm.setUserInfo(basicUserInfo);
-            AddressInfo addressInfo= new AddressInfo()
+            orderSaveForm.setUserInfo(basicUserInfoDTO);
+            OrderAddressInfo orderAddressInfo = new OrderAddressInfo()
                     .setAddressDesc("东六排六号" + i)
                     .setStreet("东关街" + i)
                     .setArea("和顺县" + i)
@@ -51,8 +50,8 @@ public class BasicOrderSaveServiceTest extends OrderCoreApplicationTests {
                     .setBuyerName("张三" + i)
                     .setBuyerPhone("13333333333")
                     ;
-            Collection<ProductInfo> productInfos = new ArrayList<>(2);
-            ProductInfo p1 = new ProductInfo();
+            Collection<ProductDTO> productDTOS = new ArrayList<>(2);
+            ProductDTO p1 = new ProductDTO();
             p1.setSpuId(IdUtils.getNoRepetitionIdStr())
                     .setBid(bid)
                     .setProductName("衣服")
@@ -63,7 +62,7 @@ public class BasicOrderSaveServiceTest extends OrderCoreApplicationTests {
                     .setSkuDesc("[[aa:bb},{cc:dd}]")
                     .setProductBarcode("0001");
 
-            ProductInfo p2 = new ProductInfo();
+            ProductDTO p2 = new ProductDTO();
             p2.setSpuId(IdUtils.getNoRepetitionIdStr())
                     .setBid(bid)
                     .setProductName("裤子")
@@ -74,7 +73,7 @@ public class BasicOrderSaveServiceTest extends OrderCoreApplicationTests {
                     .setSkuDesc("[[aa:bb},{cc:dd}]")
                     .setProductBarcode("0002");
 
-            ProductInfo p3 = new ProductInfo();
+            ProductDTO p3 = new ProductDTO();
             p3.setSpuId(IdUtils.getNoRepetitionIdStr())
                     .setBid(bid)
                     .setProductName("鞋子")
@@ -84,15 +83,15 @@ public class BasicOrderSaveServiceTest extends OrderCoreApplicationTests {
                     .setSku(IdUtils.getNoRepetitionIdStr())
                     .setSkuDesc("[[aa:bb},{cc:dd}]")
                     .setProductBarcode("0003");
-            productInfos.add(p1);
-            productInfos.add(p2);
-            productInfos.add(p3);
+            productDTOS.add(p1);
+            productDTOS.add(p2);
+            productDTOS.add(p3);
 
-            orderSaveForm.setAddressInfo(addressInfo);
+            orderSaveForm.setOrderAddressInfo(orderAddressInfo);
 
-            BasicBusinessInfo businessInfo= new BasicBusinessInfo().setBid(bid);
+            BasicBusinessInfoDTO businessInfo= new BasicBusinessInfoDTO().setBid(bid);
             orderSaveForm.setBusinessInfo(businessInfo);
-            orderSaveForm.setProductInfos(productInfos);
+            orderSaveForm.setProductDTOS(productDTOS);
 
             int i1 = i % 100;
             List<OrderSaveForm> res = maps.computeIfAbsent(i1, k -> new ArrayList<>(255));

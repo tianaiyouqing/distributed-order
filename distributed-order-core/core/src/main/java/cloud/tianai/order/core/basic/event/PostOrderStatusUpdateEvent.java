@@ -1,6 +1,6 @@
 package cloud.tianai.order.core.basic.event;
 
-import cloud.tianai.order.core.basic.impl.AbstractBasicBasicOrderStatusService;
+import cloud.tianai.order.core.basic.impl.AbstractBasicOrderStatusService;
 import org.springframework.context.ApplicationEvent;
 
 /**
@@ -15,7 +15,7 @@ public class PostOrderStatusUpdateEvent extends ApplicationEvent {
      * @param source the object on which the event initially occurred (never {@code null})
      * @param updateStatus
      */
-    public PostOrderStatusUpdateEvent(AbstractBasicBasicOrderStatusService.OrderStatusUpdate source, boolean updateStatus) {
+    public PostOrderStatusUpdateEvent(AbstractBasicOrderStatusService.OrderStatusUpdate source, boolean updateStatus) {
         super(source);
     }
 }

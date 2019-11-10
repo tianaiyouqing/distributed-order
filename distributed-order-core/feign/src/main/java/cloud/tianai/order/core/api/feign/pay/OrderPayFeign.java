@@ -2,8 +2,8 @@ package cloud.tianai.order.core.api.feign.pay;
 
 import cloud.tianai.order.common.response.ApiResponse;
 import cloud.tianai.order.core.api.feign.constant.Version;
-import cloud.tianai.order.core.common.dto.OrderCreateParamDTO;
-import cloud.tianai.order.core.common.dto.OrderCreateResult;
+import cloud.tianai.order.core.api.pay.dto.OrderCreateParam;
+import cloud.tianai.order.core.api.pay.dto.OrderCreateResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +25,6 @@ public interface OrderPayFeign {
      * @return ApiResponse<OrderCreateResult>
      */
     @PostMapping("/create")
-    ApiResponse<OrderCreateResult> createOrder(@RequestBody OrderCreateParamDTO param);
+    ApiResponse<OrderCreateResult> createOrder(@RequestBody OrderCreateParam param);
 
 }

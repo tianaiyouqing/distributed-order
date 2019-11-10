@@ -52,7 +52,7 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
-        namespace: 5a718b26-ebfc-4ebd-8f74-789b1f812621
+        namespace: 1ca3c65a-92a7-4a09-8de1-4bfe1c89d240
   application:
     name: distributed-order-business
   main:

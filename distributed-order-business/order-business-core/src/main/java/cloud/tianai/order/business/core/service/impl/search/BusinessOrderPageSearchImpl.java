@@ -6,7 +6,7 @@ import cloud.tianai.order.business.core.mapper.BusinessOrderMasterMapper;
 import cloud.tianai.order.business.core.util.OrderMergeUtils;
 import cloud.tianai.order.common.dto.OrderMasterDTO;
 import cloud.tianai.order.common.dto.PageInfo;
-import cloud.tianai.order.core.api.basic.enums.OrderStatusEnum;
+import cloud.tianai.order.core.common.enums.OrderStatusEnum;
 import cloud.tianai.order.search.AbstractOrderPageSearchService;
 import cloud.tianai.order.search.exception.OrderSearchException;
 import cloud.tianai.order.search.form.OrderSearchForm;

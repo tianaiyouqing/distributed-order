@@ -12,12 +12,9 @@ import cloud.tianai.order.business.core.event.OrderSyncForUpdateEvent;
 import cloud.tianai.order.business.core.mapper.BusinessOrderDetailMapper;
 import cloud.tianai.order.business.core.mapper.BusinessOrderMasterMapper;
 import cloud.tianai.order.business.api.sync.BusinessOrderSync;
-import cloud.tianai.order.common.response.ApiResponse;
-import cloud.tianai.order.common.response.ApiResponseStatusEnum;
-import cloud.tianai.order.core.api.basic.BasicOrderService;
+import cloud.tianai.order.core.api.basic.BasicOrderSearchService;
 import cloud.tianai.order.core.common.dataobject.OrderDetailDO;
 import cloud.tianai.order.core.common.dataobject.OrderMasterDO;
-import cloud.tianai.order.core.common.wrapper.BasicOrderWrapper;
 import cloud.tianai.order.core.common.wrapper.OrderWrapper;
 import cloud.tianai.order.lock.LockTemplate;
 import cloud.tianai.order.lock.dto.LockDTO;
@@ -41,7 +38,7 @@ import java.util.Objects;
 public class BusinessOrderSyncImpl implements BusinessOrderSync {
 
     private final LockTemplate lockTemplate;
-    private final BasicOrderService basicOrderService;
+    private final BasicOrderSearchService basicOrderSearchService;
     private final BusinessOrderMasterMapper businessOrderMasterMapper;
     private final BusinessOrderDetailMapper businessOrderDetailMapper;
     private final ApplicationContext applicationContext;
@@ -54,7 +51,7 @@ public class BusinessOrderSyncImpl implements BusinessOrderSync {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void sync(String oid) throws OrderSyncException {
-        OrderWrapper orderWrapperResponse = basicOrderService.getOrderDescForOid(oid);
+        OrderWrapper orderWrapperResponse = basicOrderSearchService.getOrderDescForOid(oid);
         if(orderWrapperResponse == null) {
             // 如果是空，则执行删除操作
             businessOrderMasterMapper.deleteById(oid);

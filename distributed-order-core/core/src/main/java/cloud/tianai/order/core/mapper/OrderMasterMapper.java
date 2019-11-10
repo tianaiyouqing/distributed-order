@@ -1,6 +1,6 @@
 package cloud.tianai.order.core.mapper;
 
-import cloud.tianai.order.core.basic.impl.AbstractBasicBasicOrderStatusService;
+import cloud.tianai.order.core.basic.impl.AbstractBasicOrderStatusService;
 import cloud.tianai.order.core.common.dataobject.OrderMasterDO;
 import cloud.tianai.order.search.form.OrderSearchForm;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface OrderMasterMapper extends BaseMapper<OrderMasterDO> {
 
-    int updateOrderStatus(@Param("update") AbstractBasicBasicOrderStatusService.OrderStatusUpdate update);
+    int updateOrderStatus(@Param("update") AbstractBasicOrderStatusService.OrderStatusUpdate update);
 
     List<String> findFutureScrollPageNums(@Param("search") OrderSearchForm search,
                                           @Param("lastFlowNum") String lastFlowNum,
