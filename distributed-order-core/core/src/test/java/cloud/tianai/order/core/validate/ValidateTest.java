@@ -17,6 +17,6 @@ public class ValidateTest extends OrderCoreApplicationTests {
 
     public static  <T> void validate(T obj) {
         BindingResult bindingResult = ValidateUtils.validate(obj);
-        System.out.println(bindingResult);
+        System.out.println(bindingResult.getFieldError().getDefaultMessage());
     }
 }

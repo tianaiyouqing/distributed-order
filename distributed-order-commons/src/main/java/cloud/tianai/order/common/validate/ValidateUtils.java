@@ -19,9 +19,7 @@ public class ValidateUtils {
 
     private static LocalValidatorFactoryBean validator;
 
-    private static final Object TARGET = new Object();
-
-    private static LocalValidatorFactoryBean getValidate() {
+    private static LocalValidatorFactoryBean getValidator() {
         ApplicationContext applicationContext = ApplicationContextHolder.getApplicationContext();
         if (validator == null) {
             synchronized (applicationContext) {
@@ -58,12 +56,14 @@ public class ValidateUtils {
      * @return
      */
     public static BindingResult validate(Object obj, Class<?>... groups) {
-        LocalValidatorFactoryBean validator = getValidate();
+        LocalValidatorFactoryBean validator = getValidator();
         if (validator == null) {
             throw new IllegalArgumentException("validate 未找到， 查看是否初始化");
         }
-        BindingResult bindingResult = new DirectFieldBindingResult(TARGET, TARGET.getClass().getSimpleName());
+        BindingResult bindingResult = new DirectFieldBindingResult(obj, obj.getClass().getSimpleName());
+
         validator.validate(obj, bindingResult, groups);
+
         return bindingResult;
     }
 }
