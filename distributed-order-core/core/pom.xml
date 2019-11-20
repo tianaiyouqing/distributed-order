@@ -100,6 +100,8 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-actuator</artifactId>
         </dependency>
+
+
     </dependencies>
 
     <build>
@@ -118,6 +120,12 @@
             </activation>
             <properties>
                 <spring.profile>test</spring.profile>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <spring.profile>dev</spring.profile>
             </properties>
         </profile>
     </profiles>

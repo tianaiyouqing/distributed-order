@@ -129,6 +129,12 @@
                 <spring.profile>test</spring.profile>
             </properties>
         </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <spring.profile>dev</spring.profile>
+            </properties>
+        </profile>
     </profiles>
 
 </project>

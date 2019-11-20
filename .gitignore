@@ -24,3 +24,5 @@
 /nbdist/
 /.nb-gradle/
 target/
+/distributed-order-core/core/src/main/resources/application-dev.yaml
+/distributed-order-business/order-business-core/src/main/resources/application-dev.yaml

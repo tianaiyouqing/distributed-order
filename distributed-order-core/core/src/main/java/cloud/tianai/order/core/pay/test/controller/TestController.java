@@ -8,12 +8,14 @@ import cloud.tianai.order.core.api.pay.dto.SimpleOrderProductDTO;
 import cloud.tianai.order.core.common.enums.OrderTypeEnum;
 import cloud.tianai.order.common.util.id.IdUtils;
 import cloud.tianai.order.core.common.info.OrderAddressInfo;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -23,6 +25,32 @@ public class TestController {
 
     @Autowired
     private OrderPayService orderPayService;
+
+
+    @GetMapping("/ex")
+    public ApiResponse exTest() {
+        throw new RuntimeException("异常处理");
+    }
+
+    @PostMapping("/validate")
+    public ApiResponse validate(@Validated @RequestBody Demo demo, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ApiResponse.ofCheckError(bindingResult.getFieldError().getDefaultMessage());
+        }
+        return ApiResponse.ofSuccess("success");
+    }
+
+    @Data
+    public static class Demo {
+        @NotEmpty(message = "name不能为空")
+        private String name;
+        @NotNull(message = "age不能为空")
+        @Min(value = 10, message = "最小能小于10")
+        @Max(value = 100, message = "最大不能大于100")
+        private Integer age;
+
+    }
+
 
     @GetMapping("/createOrder")
     public ApiResponse<OrderCreateResult> testCreateOrder() {
