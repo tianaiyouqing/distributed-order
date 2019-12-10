@@ -56,25 +56,9 @@ public class ConsistentHash {
     }
 
 
-    /**
-     * 使用FNV1_32_HASH算法计算服务器的Hash值,这里不使用重写hashCode的方法，最终效果没区别
-     */
-    public static int getHash(String str) {
-        final int p = 16777619;
-        int hash = (int) 2166136261L;
-        for (int i = 0; i < str.length(); i++) {
-            hash = (hash ^ str.charAt(i)) * p;
-        }
-        hash += hash << 13;
-        hash ^= hash >> 7;
-        hash += hash << 3;
-        hash ^= hash >> 17;
-        hash += hash << 5;
 
-        // 如果算出来的值为负数则取其绝对值
-        if (hash < 0) {
-            hash = Math.abs(hash);
-        }
+    public static int getHash(String str) {
+        int hash = (hash = str.hashCode()) ^ (hash >>> 16);
         return hash;
     }
 
@@ -108,13 +92,13 @@ public class ConsistentHash {
      */
     public String getDatabaseForMod(String node) {
         int hash = getHash(node);
-        int serverIndex = (int) (Math.floor(new Double(hash) / new Double(servers.size()))) % servers.size();
+        int serverIndex = (int) (Math.floor((double) hash / (double) servers.size())) & (servers.size() - 1);
         return servers.get(serverIndex);
     }
 
     public String getTableForMod(String node) {
         int hash = getHash(node);
-        int serverIndex = hash % servers.size();
+        int serverIndex = hash & (servers.size() - 1);
         return servers.get(serverIndex);
     }
 
