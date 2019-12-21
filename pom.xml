@@ -16,6 +16,7 @@
         <module>distributed-order-business</module>
         <module>distributed-order-id</module>
         <module>distributed-commons-lock</module>
+        <module>distributed-order-register</module>
     </modules>
     <groupId>cloud.tianai</groupId>
     <artifactId>distributed-order</artifactId>
